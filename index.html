@@ -94,7 +94,7 @@ margin-bottom: 10px;
 
 .title {
 font-family: ‘Bebas Neue’, sans-serif;
-font-size: clamp(4rem, 14vw, 7.5rem);
+font-size: clamp(3rem, 11vw, 6rem);
 line-height: 0.88;
 letter-spacing: 0.06em;
 color: var(–crimson);
@@ -107,11 +107,12 @@ text-shadow:
 .title .sub {
 display: block;
 color: var(–bone);
-font-size: 0.28em;
-letter-spacing: 0.2em;
+font-size: 0.25em;
+letter-spacing: 0.18em;
 text-shadow: none;
 padding-left: 0.1em;
-margin-top: 4px;
+margin-top: 6px;
+line-height: 1.3;
 }
 
 .ornament {
@@ -228,11 +229,7 @@ font-family: ‘Share Tech Mono’, monospace;
 font-size: 1rem;
 text-align: center;
 outline: none;
-cursor: pointer;
-transition: color 0.15s, background 0.15s;
 }
-
-.cnt-val:hover { background: var(–ash); color: var(–gold); }
 
 /* ── MODIFIER ── */
 .modifier-row {
@@ -703,151 +700,6 @@ letter-spacing: 0.05em;
 .log-pips .pl { color: var(–gold-dim); }
 .log-time  { font-size: 0.62rem; color: #333; white-space: nowrap; padding-top: 4px; }
 
-/* ── CLEAR GRID BUTTON ── */
-.grid-clear-wrap {
-width: 100%;
-display: flex;
-justify-content: center;
-margin-bottom: 20px;
-animation: fadeUp 0.6s 0.18s ease both;
-}
-
-#clearGridBtn {
-font-family: ‘Share Tech Mono’, monospace;
-font-size: 0.65rem;
-letter-spacing: 0.25em;
-color: var(–dim);
-background: none;
-border: 1px solid var(–ash);
-border-radius: 2px;
-padding: 8px 20px;
-cursor: pointer;
-text-transform: uppercase;
-transition: color 0.2s, border-color 0.2s;
-}
-
-#clearGridBtn:hover  { color: var(–ember); border-color: var(–crimson); }
-#clearGridBtn:active { color: var(–ember); border-color: var(–crimson); }
-
-/* ── NUMPAD MODAL ── */
-.numpad-overlay {
-display: none;
-position: fixed;
-inset: 0;
-background: rgba(8,8,8,0.88);
-z-index: 500;
-align-items: flex-end;
-justify-content: center;
-}
-
-.numpad-overlay.active {
-display: flex;
-animation: overlayIn 0.15s ease both;
-}
-
-.numpad-modal {
-background: var(–shadow);
-border: 1px solid var(–mist);
-border-bottom: none;
-border-radius: 6px 6px 0 0;
-padding: 20px 20px 28px;
-width: 100%;
-max-width: 360px;
-animation: numpadUp 0.25s cubic-bezier(0.22,1,0.36,1) both;
-}
-
-@keyframes numpadUp {
-from { transform: translateY(100%); }
-to   { transform: translateY(0); }
-}
-
-.numpad-title {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 1rem;
-letter-spacing: 0.2em;
-color: var(–dim);
-text-align: center;
-margin-bottom: 10px;
-}
-
-.numpad-title span { color: var(–gold); }
-
-.numpad-display {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 3.5rem;
-color: var(–ember);
-text-align: center;
-line-height: 1;
-margin-bottom: 16px;
-min-height: 3.5rem;
-text-shadow: 0 0 20px rgba(255,64,64,0.3);
-letter-spacing: 0.05em;
-}
-
-.numpad-keys {
-display: grid;
-grid-template-columns: repeat(3, 1fr);
-gap: 8px;
-margin-bottom: 14px;
-}
-
-.nk {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 1.5rem;
-letter-spacing: 0.1em;
-color: var(–bone);
-background: var(–ash);
-border: 1px solid var(–mist);
-border-radius: 3px;
-padding: 14px 0;
-cursor: pointer;
-transition: background 0.12s, color 0.12s;
--webkit-tap-highlight-color: transparent;
-}
-
-.nk:hover  { background: var(–mist); }
-.nk:active { background: var(–crimson); border-color: var(–crimson); color: #fff; }
-
-.nk-clear         { color: var(–gold); }
-.nk-back          { color: var(–bone); font-size: 1.2rem; }
-.nk-clear:active  { background: var(–gold-dim); border-color: var(–gold-dim); color: #fff; }
-
-.numpad-actions {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 8px;
-}
-
-.numpad-cancel,
-.numpad-confirm {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 1.1rem;
-letter-spacing: 0.2em;
-padding: 14px 0;
-border: none;
-border-radius: 3px;
-cursor: pointer;
-transition: background 0.15s, transform 0.1s;
--webkit-tap-highlight-color: transparent;
-}
-
-.numpad-cancel {
-background: var(–ash);
-color: var(–dim);
-border: 1px solid var(–mist);
-}
-
-.numpad-cancel:hover  { color: var(–bone); background: var(–mist); }
-.numpad-cancel:active { transform: scale(0.97); }
-
-.numpad-confirm {
-background: var(–blood);
-color: #fff;
-}
-
-.numpad-confirm:hover  { background: var(–crimson); }
-.numpad-confirm:active { transform: scale(0.97); }
-
 /* ── ANIMATIONS ── */
 @keyframes fadeDown {
 from { opacity: 0; transform: translateY(-20px); }
@@ -899,238 +751,9 @@ to   { opacity: 1; }
 
 .die-card.shaking .die-glyph { animation: diceShake 0.45s ease; }
 
-/* ============================================================
-MOBILE — Tablet (max 600px) and Phone (max 420px)
-============================================================ */
-
-@media (max-width: 600px) {
-
 ```
-/* Tighter wrap padding on small screens */
-.wrap {
-    padding: 32px 16px 120px; /* extra bottom for sticky button */
-}
-
-/* Shrink header breathing room */
-.header {
-    margin-bottom: 32px;
-}
-
-/* Hide the long eyebrow text on tiny screens */
-.eyebrow {
-    font-size: 0.55rem;
-    letter-spacing: 0.25em;
-}
-
-/* Shorter ornament lines */
-.orn-line {
-    width: 40px;
-}
-
-/* 2-column dice grid on mobile */
-.dice-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-/* Bigger touch targets on die cards */
-.die-card {
-    padding: 16px 8px 14px;
-    gap: 8px;
-}
-
-/* Larger +/- buttons for fat fingers */
-.cnt-btn {
-    width: 38px;
-    height: 38px;
-    font-size: 1.3rem;
-}
-
-.cnt-val {
-    width: 38px;
-    height: 38px;
-    font-size: 1rem;
-}
-
-/* Modifier row: stack label above controls on very small screens */
-.modifier-row {
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-    text-align: center;
-}
-
-.mod-hint {
-    width: 100%;
-    text-align: center;
-    font-size: 0.58rem;
-}
-
-/* Bigger modifier buttons */
-.mod-btn {
-    width: 38px;
-    height: 38px;
-    font-size: 1.3rem;
-}
-
-.mod-val {
-    width: 52px;
-    height: 38px;
-    font-size: 1rem;
-}
-
-/* Note input full width, bigger tap area */
-.note-input {
-    font-size: 0.9rem;
-    padding: 12px 14px;
-}
-
-/* Sticky Roll button at bottom of screen */
-.roll-btn-wrap {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: 0;
-    padding: 12px 20px 20px;
-    background: linear-gradient(to top, var(--ink) 70%, transparent);
-    z-index: 100;
-    gap: 8px;
-}
-
-/* Roll button full width on mobile */
-#rollButton {
-    width: 100%;
-    font-size: 1.8rem;
-    padding: 18px 20px;
-    clip-path: none;
-    border-radius: 3px;
-    /* Active state feedback for touch */
-    -webkit-tap-highlight-color: transparent;
-}
-
-#rollButton:active {
-    transform: scale(0.97);
-    background: var(--crimson);
-}
-
-#clearDiceBtn {
-    font-size: 0.7rem;
-}
-
-/* Results panel tighter */
-.result-total {
-    padding: 18px 16px;
-}
-
-.breakdown-row {
-    padding: 10px 12px;
-    gap: 8px;
-}
-
-/* Log entry: collapse to 2-col (no index number) */
-.log-entry {
-    grid-template-columns: 1fr auto;
-    gap: 8px;
-    padding: 10px 12px;
-}
-
-.log-num {
-    display: none;
-}
-
-.log-score {
-    font-size: 1.6rem;
-}
-
-/* Stats bar wraps on mobile */
-.stats-bar {
-    flex-wrap: wrap;
-}
-
-.stat-cell {
-    min-width: 50%;
-    border-bottom: 1px solid var(--ash);
-}
-
-.stat-cell:nth-child(odd) {
-    border-right: 1px solid var(--ash);
-}
-
-.stat-cell:nth-child(even) {
-    border-right: none;
-}
-
-.stat-cell:nth-last-child(-n+2) {
-    border-bottom: none;
-}
-
-/* Overlay dice smaller on mobile */
-.overlay-die {
-    font-size: 2rem;
-    min-width: 44px;
-}
-```
-
-}
-
-@media (max-width: 380px) {
-
-```
-/* Single column dice grid on the tiniest phones */
-.dice-grid {
-    grid-template-columns: repeat(2, 1fr);
-}
-
-.title {
-    font-size: clamp(3rem, 18vw, 5rem);
-}
-
-/* Slightly smaller pip badges */
-.pip {
-    font-size: 0.72rem;
-    padding: 2px 6px;
-}
-```
-
-}
-
-/* Prevent iOS input zoom (inputs must be >= 16px font) */
-@media (max-width: 600px) {
-input, select, textarea {
-font-size: 16px !important;
-}
-}
-
-/* Touch devices: remove hover states that linger after tap */
-@media (hover: none) {
-.die-card:hover {
-transform: none;
-border-color: var(–ash);
-}
-
-```
-.die-card.active:hover {
-    border-color: var(--crimson);
-}
-
-.cnt-btn:hover  { background: var(--ash);    border-color: var(--mist); }
-.mod-btn:hover  { background: var(--ash);    border-color: var(--mist); }
-#rollButton:hover {
-    background: var(--blood);
-    box-shadow: none;
-    transform: none;
-}
-
-/* Active states for touch feedback instead */
-.cnt-btn:active  { background: var(--crimson); border-color: var(--crimson); }
-.mod-btn:active  { background: var(--gold-dim); border-color: var(--gold-dim); }
-#clearLogBtn:active { color: var(--ember); border-color: var(--crimson); }
-```
-
-}
 </style>
+```
 
 </head>
 <body>
@@ -1211,7 +834,7 @@ border-color: var(–ash);
 </div>
 
 <div class="numpad-overlay" id="numpadOverlay">
-    <div class="numpad-modal" id="numpadModal">
+    <div class="numpad-modal">
         <div class="numpad-title">Set quantity &mdash; <span id="numpadDieLabel">d?</span></div>
         <div class="numpad-display" id="numpadDisplay">0</div>
         <div class="numpad-keys">
@@ -1251,7 +874,7 @@ border-color: var(–ash);
 
 <div class="roll-btn-wrap">
     <button id="rollButton">&#9670; Roll &#9670;</button>
-    <button id="clearDiceBtn">Reset All</button>
+    <button id="clearDiceBtn">Reset</button>
 </div>
 
 <p class="error-msg" id="error">&#9670; Select at least one die to roll &#9670;</p>
@@ -1439,185 +1062,109 @@ return {
 ```
 
 }());
+
 /* ============================================================
 Murder Inc Dice Roller — app.js
 ============================================================ */
 
 var SIDES = [4, 6, 8, 10, 12, 20];
 
-var counts       = { 4: 0, 6: 0, 8: 0, 10: 0, 12: 0, 20: 0 };
-var modifier     = 0;
+// Die counts
+var counts = { 4: 0, 6: 0, 8: 0, 10: 0, 12: 0, 20: 0 };
+
+// Modifier
+var modifier = 0;
+
+// Roll log
 var rollHistory  = [];
 var rollCount    = 0;
 var sessionTotal = 0;
 var sessionHigh  = null;
 
-var numpadSide    = null;
-var numpadCurrent = ‘’;
+// ── Helpers ───────────────────────────────────────────────────────
 
-function el(id) { return document.getElementById(id); }
-function randomInt(max) { return Math.floor(Math.random() * max) + 1; }
+function el(id) {
+return document.getElementById(id);
+}
 
-/* ── Dice grid — single handler for both +/- and count tap ── */
+function randomInt(max) {
+return Math.floor(Math.random() * max) + 1;
+}
+
+// ── Counter buttons ───────────────────────────────────────────────
 
 el(‘diceGrid’).addEventListener(‘click’, function (e) {
+var btn = e.target.closest(’.cnt-btn’);
+if (!btn) return;
 
 ```
-// +/- counter buttons
-var btn = e.target.closest('.cnt-btn');
-if (btn) {
-    var side  = parseInt(btn.getAttribute('data-side'),  10);
-    var delta = parseInt(btn.getAttribute('data-delta'), 10);
-    setCount(side, counts[side] + delta);
-    el('error').style.display = 'none';
-    MurderSound.click();
-    return;
-}
+var side  = parseInt(btn.getAttribute('data-side'),  10);
+var delta = parseInt(btn.getAttribute('data-delta'), 10);
 
-// Tap the count value → open numpad
-var input = e.target.closest('.cnt-val');
-if (input) {
-    var side = parseInt(input.id.replace('cnt-', ''), 10);
-    openNumpad(side);
-    return;
-}
+counts[side] = Math.max(0, counts[side] + delta);
+el('cnt-' + side).value = counts[side];
+el('card-' + side).classList.toggle('active', counts[side] > 0);
+el('error').style.display = 'none';
+
+MurderSound.click();
 ```
 
 });
 
-/* ── Set count helper ────────────────────────────────────── */
+// ── Modifier buttons ──────────────────────────────────────────────
 
-function setCount(side, val) {
-counts[side] = Math.max(0, Math.min(99, val));
-el(‘cnt-’ + side).value = counts[side];
-el(‘card-’ + side).classList.toggle(‘active’, counts[side] > 0);
-}
-
-/* ── Clear dice grid button ──────────────────────────────── */
-
-el(‘clearGridBtn’).addEventListener(‘click’, function () {
-SIDES.forEach(function (s) { setCount(s, 0); });
-el(‘error’).style.display = ‘none’;
-MurderSound.clear();
-});
-
-/* ── Full reset button ───────────────────────────────────── */
-
-el(‘clearDiceBtn’).addEventListener(‘click’, function () {
-SIDES.forEach(function (s) { setCount(s, 0); });
-modifier = 0;
+el(‘modDown’).addEventListener(‘click’, function () {
+modifier–;
 updateModDisplay();
-el(‘rollNote’).value      = ‘’;
-el(‘results’).innerHTML   = ‘’;
-el(‘error’).style.display = ‘none’;
-MurderSound.clear();
+MurderSound.click();
 });
 
-/* ── Modifier buttons ────────────────────────────────────── */
-
-el(‘modDown’).addEventListener(‘click’, function () { modifier–; updateModDisplay(); MurderSound.click(); });
-el(‘modUp’).addEventListener(‘click’,   function () { modifier++; updateModDisplay(); MurderSound.click(); });
+el(‘modUp’).addEventListener(‘click’, function () {
+modifier++;
+updateModDisplay();
+MurderSound.click();
+});
 
 function updateModDisplay() {
-var input       = el(‘modifier’);
-input.value     = modifier >= 0 ? ‘+’ + modifier : String(modifier);
+var input = el(‘modifier’);
+input.value = modifier >= 0 ? ‘+’ + modifier : String(modifier);
 input.className = ‘mod-val’ + (modifier > 0 ? ’ positive’ : modifier < 0 ? ’ negative’ : ‘’);
 }
 
-/* ── Numpad ──────────────────────────────────────────────── */
+// ── Reset button ──────────────────────────────────────────────────
 
-function openNumpad(side) {
-numpadSide    = side;
-numpadCurrent = counts[side] > 0 ? String(counts[side]) : ‘’;
-el(‘numpadDieLabel’).textContent = ‘d’ + side;
-el(‘numpadDisplay’).textContent  = numpadCurrent || ‘0’;
-el(‘numpadOverlay’).classList.add(‘active’);
-MurderSound.click();
-}
-
-function closeNumpad() {
-el(‘numpadOverlay’).classList.remove(‘active’);
-numpadSide    = null;
-numpadCurrent = ‘’;
-}
-
-function numpadAction(val) {
-if (val === ‘clear’) {
-numpadCurrent = ‘’;
-} else if (val === ‘back’) {
-numpadCurrent = numpadCurrent.slice(0, -1);
-} else {
-if (numpadCurrent.length >= 2) return;  // max 99
-numpadCurrent += val;
-// Strip leading zero
-var parsed = parseInt(numpadCurrent, 10);
-numpadCurrent = parsed ? String(parsed) : ‘’;
-}
-el(‘numpadDisplay’).textContent = numpadCurrent || ‘0’;
-MurderSound.click();
-}
-
-// Single overlay click handler — keys, close-on-backdrop, prevent modal close
-el(‘numpadOverlay’).addEventListener(‘click’, function (e) {
-
-```
-// Tap backdrop (the overlay itself, not the modal inside) → close
-if (e.target === el('numpadOverlay')) {
-    closeNumpad();
-    return;
-}
-
-// Numpad digit/action keys
-var key = e.target.closest('.nk');
-if (key) {
-    numpadAction(key.getAttribute('data-val'));
-    return;
-}
-```
-
+el(‘clearDiceBtn’).addEventListener(‘click’, function () {
+SIDES.forEach(function (s) {
+counts[s] = 0;
+el(‘cnt-’ + s).value = 0;
+el(‘card-’ + s).classList.remove(‘active’);
+});
+modifier = 0;
+updateModDisplay();
+el(‘rollNote’).value       = ‘’;
+el(‘results’).innerHTML    = ‘’;
+el(‘error’).style.display  = ‘none’;
+MurderSound.clear();
 });
 
-// Cancel button
-el(‘numpadCancel’).addEventListener(‘click’, function () {
-closeNumpad();
-});
-
-// Confirm button — single listener
-el(‘numpadConfirm’).addEventListener(‘click’, function () {
-if (numpadSide !== null) {
-setCount(numpadSide, parseInt(numpadCurrent, 10) || 0);
-el(‘error’).style.display = ‘none’;
-}
-closeNumpad();
-MurderSound.click();
-});
-
-// Physical keyboard while numpad is open
-document.addEventListener(‘keydown’, function (e) {
-if (!el(‘numpadOverlay’).classList.contains(‘active’)) return;
-if (e.key >= ‘0’ && e.key <= ‘9’) { numpadAction(e.key);       return; }
-if (e.key === ‘Backspace’)         { numpadAction(‘back’);       return; }
-if (e.key === ‘Delete’)            { numpadAction(‘clear’);      return; }
-if (e.key === ‘Escape’)            { closeNumpad();              return; }
-if (e.key === ‘Enter’)             { el(‘numpadConfirm’).click(); return; }
-});
-
-/* ── Roll button ─────────────────────────────────────────── */
+// ── Roll button ───────────────────────────────────────────────────
 
 el(‘rollButton’).addEventListener(‘click’, doRoll);
 
 function doRoll() {
 var anySelected = SIDES.some(function (s) { return counts[s] > 0; });
-if (!anySelected) {
-var errorEl = el(‘error’);
-errorEl.style.display   = ‘block’;
-errorEl.style.animation = ‘none’;
-setTimeout(function () { errorEl.style.animation = ‘’; }, 10);
-return;
-}
-el(‘error’).style.display = ‘none’;
 
 ```
+if (!anySelected) {
+    var errorEl = el('error');
+    errorEl.style.display   = 'block';
+    errorEl.style.animation = 'none';
+    setTimeout(function () { errorEl.style.animation = ''; }, 10);
+    return;
+}
+
+el('error').style.display = 'none';
+
 // Shake active cards
 SIDES.forEach(function (s) {
     if (counts[s] > 0) {
@@ -1636,18 +1183,21 @@ void rollBtn.offsetWidth;
 rollBtn.classList.add('rolling');
 setTimeout(function () { rollBtn.classList.remove('rolling'); }, 600);
 
+// Play rattle sound
 MurderSound.rattle();
+
+// Show rolling overlay
 showOverlay();
 ```
 
 }
 
-/* ── Rolling overlay ─────────────────────────────────────── */
+// ── Rolling overlay ───────────────────────────────────────────────
 
 function showOverlay() {
-var overlay = el(‘rollOverlay’);
-var diceEl  = el(‘overlayDice’);
-var totalEl = el(‘overlayTotal’);
+var overlay    = el(‘rollOverlay’);
+var diceEl     = el(‘overlayDice’);
+var totalEl    = el(‘overlayTotal’);
 
 ```
 totalEl.classList.remove('slam');
@@ -1655,50 +1205,64 @@ totalEl.textContent = '';
 diceEl.innerHTML    = '';
 overlay.classList.add('active');
 
-var dieEls = [];
-SIDES.forEach(function (s) {
-    if (counts[s] > 0) {
-        for (var i = 0; i < counts[s]; i++) {
-            var d = document.createElement('div');
-            d.className   = 'overlay-die';
-            d.textContent = randomInt(s);
-            diceEl.appendChild(d);
-            dieEls.push({ el: d, sides: s });
-        }
+// Build scrambling die display
+var activeSides = SIDES.filter(function (s) { return counts[s] > 0; });
+var dieEls      = [];
+
+activeSides.forEach(function (s) {
+    for (var i = 0; i < counts[s]; i++) {
+        var d = document.createElement('div');
+        d.className   = 'overlay-die';
+        d.textContent = randomInt(s);
+        diceEl.appendChild(d);
+        dieEls.push({ el: d, sides: s });
     }
 });
 
+// Scramble numbers for 600ms
 var scrambleInterval = setInterval(function () {
-    dieEls.forEach(function (d) { d.el.textContent = randomInt(d.sides); });
+    dieEls.forEach(function (d) {
+        d.el.textContent = randomInt(d.sides);
+    });
 }, 80);
 
+// After 650ms: compute real result, show final numbers + total
 setTimeout(function () {
     clearInterval(scrambleInterval);
-    var result = compute();
-    var idx    = 0;
 
+    var result = compute();
+
+    // Show final roll values per die
+    var idx = 0;
     result.breakdown.forEach(function (b) {
         b.rolls.forEach(function (r) {
             if (dieEls[idx]) {
-                dieEls[idx].el.textContent     = r;
+                dieEls[idx].el.textContent = r;
                 dieEls[idx].el.style.animation = 'none';
-                dieEls[idx].el.style.color     = r === b.sides ? '#c9a84c' : r === 1 ? '#555' : '#c0001a';
+                dieEls[idx].el.style.color = r === b.sides ? '#c9a84c' : r === 1 ? '#555' : '#c0001a';
             }
             idx++;
         });
     });
 
-    var displayTotal        = result.grandTotal + modifier;
-    totalEl.textContent     = displayTotal;
+    // Show total with modifier
+    var displayTotal = result.grandTotal + modifier;
+    totalEl.textContent = displayTotal;
     setTimeout(function () { totalEl.classList.add('slam'); }, 30);
 
+    // Play impact sound
     MurderSound.impact();
 
+    // Play flourish based on roll quality
     var maxPossible = SIDES.reduce(function (acc, s) { return acc + counts[s] * s; }, 0);
     var ratio       = result.grandTotal / maxPossible;
-    if (ratio >= 0.75)      { setTimeout(function () { MurderSound.highRoll(); }, 150); }
-    else if (ratio <= 0.25) { setTimeout(function () { MurderSound.lowRoll();  }, 150); }
+    if (ratio >= 0.75) {
+        setTimeout(function () { MurderSound.highRoll(); }, 150);
+    } else if (ratio <= 0.25) {
+        setTimeout(function () { MurderSound.lowRoll(); }, 150);
+    }
 
+    // Dismiss overlay after 1s, then render results
     setTimeout(function () {
         overlay.classList.remove('active');
         totalEl.classList.remove('slam');
@@ -1711,36 +1275,50 @@ setTimeout(function () {
 
 }
 
-/* ── Compute rolls ───────────────────────────────────────── */
+// ── Compute rolls ─────────────────────────────────────────────────
 
 function compute() {
 var grandTotal = 0;
 var breakdown  = [];
+
+```
 SIDES.forEach(function (s) {
-var n = counts[s];
-if (n > 0) {
-var rolls = [];
-for (var i = 0; i < n; i++) { rolls.push(randomInt(s)); }
-var sub = rolls.reduce(function (a, b) { return a + b; }, 0);
-grandTotal += sub;
-breakdown.push({ sides: s, label: ‘d’ + s, rolls: rolls, sub: sub });
-}
+    var n = counts[s];
+    if (n > 0) {
+        var rolls = [];
+        for (var i = 0; i < n; i++) {
+            rolls.push(randomInt(s));
+        }
+        var sub = rolls.reduce(function (a, b) { return a + b; }, 0);
+        grandTotal += sub;
+        breakdown.push({ sides: s, label: 'd' + s, rolls: rolls, sub: sub });
+    }
 });
+
 return { grandTotal: grandTotal, breakdown: breakdown };
+```
+
 }
 
-/* ── Render results ──────────────────────────────────────── */
+// ── Render result panel ───────────────────────────────────────────
 
 function renderResults(total, breakdown) {
 var displayTotal = total + modifier;
 var totalDice    = breakdown.reduce(function (a, b) { return a + b.rolls.length; }, 0);
 var diceDesc     = breakdown.map(function (b) { return b.rolls.length + b.label; }).join(’ + ’);
 var note         = el(‘rollNote’).value.trim();
-var modText = ‘’, modClass = ‘’;
-if (modifier > 0)      { modText = ‘modifier +’ + modifier + ’ = ’ + displayTotal; modClass = ‘positive’; }
-else if (modifier < 0) { modText = ’modifier ’  + modifier + ’ = ’ + displayTotal; modClass = ‘negative’; }
 
 ```
+var modText = '';
+var modClass = '';
+if (modifier > 0) {
+    modText  = 'modifier +' + modifier + ' = ' + displayTotal;
+    modClass = 'positive';
+} else if (modifier < 0) {
+    modText  = 'modifier ' + modifier + ' = ' + displayTotal;
+    modClass = 'negative';
+}
+
 var html = '<div class="result-total">'
          +   '<div class="result-label">Total</div>'
          + (note ? '<div class="result-note">' + note + '</div>' : '')
@@ -1754,6 +1332,7 @@ breakdown.forEach(function (b) {
         var cls = r === b.sides ? 'pip is-max' : r === 1 ? 'pip is-min' : 'pip';
         return '<span class="' + cls + '">' + r + '</span>';
     }).join('');
+
     html += '<div class="breakdown-row">'
           +   '<span class="bd-die">' + b.label + '</span>'
           +   '<div class="bd-pips">' + pips + '</div>'
@@ -1766,7 +1345,7 @@ el('results').innerHTML = html;
 
 }
 
-/* ── Roll log ────────────────────────────────────────────── */
+// ── Add to log ────────────────────────────────────────────────────
 
 function addToLog(total, breakdown) {
 rollCount++;
@@ -1775,61 +1354,90 @@ sessionTotal += displayTotal;
 if (sessionHigh === null || displayTotal > sessionHigh) sessionHigh = displayTotal;
 
 ```
-var timeStr  = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+var now      = new Date();
+var timeStr  = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 var diceDesc = breakdown.map(function (b) { return b.rolls.length + b.label; }).join('+');
 var note     = el('rollNote').value.trim();
-var modText  = '', modClass = '';
-if (modifier > 0)      { modText = '+' + modifier;     modClass = 'positive'; }
-else if (modifier < 0) { modText = String(modifier);   modClass = 'negative'; }
+
+var modText  = '';
+var modClass = '';
+if (modifier > 0)      { modText = '+' + modifier; modClass = 'positive'; }
+else if (modifier < 0) { modText = String(modifier); modClass = 'negative'; }
 
 var pipStr = breakdown.map(function (b) {
     return '<span class="pl">' + b.label + ':</span> ' + b.rolls.join(', ');
 }).join('  |  ');
 
-rollHistory.unshift({ number: rollCount, displayTotal: displayTotal, diceDesc: diceDesc,
-                      note: note, modText: modText, modClass: modClass,
-                      pipStr: pipStr, timeStr: timeStr });
+rollHistory.unshift({
+    number:      rollCount,
+    displayTotal: displayTotal,
+    diceDesc:    diceDesc,
+    note:        note,
+    modText:     modText,
+    modClass:    modClass,
+    pipStr:      pipStr,
+    timeStr:     timeStr
+});
+
 renderLog();
 updateStats();
 ```
 
 }
 
+// ── Render log ────────────────────────────────────────────────────
+
 function renderLog() {
 var list  = el(‘log-list’);
 var empty = el(‘log-empty’);
+
+```
 if (rollHistory.length === 0) {
-empty.style.display = ‘block’;
-list.innerHTML      = ‘’;
-return;
-}
-empty.style.display = ‘none’;
-list.innerHTML = rollHistory.map(function (e) {
-var noteHtml = e.note    ? ‘<div class="log-note">’ + e.note + ‘</div>’ : ‘’;
-var modHtml  = e.modText ? ‘<span class="log-mod ' + e.modClass + '">(’ + e.modText + ‘)</span>’ : ‘’;
-return ‘<li class="log-entry">’
-+   ‘<div class="log-num">#’ + e.number + ‘</div>’
-+   ‘<div class="log-body">’
-+     noteHtml
-+     ‘<div class="log-total-line">’
-+       ‘<span class="log-score">’ + e.displayTotal + ‘</span>’
-+       ‘<span class="log-desc">’  + e.diceDesc     + ‘</span>’
-+       modHtml
-+     ‘</div>’
-+     ‘<div class="log-pips">’ + e.pipStr + ‘</div>’
-+   ‘</div>’
-+   ‘<div class="log-time">’ + e.timeStr + ‘</div>’
-+ ‘</li>’;
-}).join(’’);
+    empty.style.display = 'block';
+    list.innerHTML      = '';
+    return;
 }
 
-function updateStats() {
-el(‘statsBar’).style.display = ‘flex’;
-el(‘statRolls’).textContent  = rollCount;
-el(‘statTotal’).textContent  = sessionTotal;
-el(‘statHigh’).textContent   = sessionHigh;
-el(‘statAvg’).textContent    = (sessionTotal / rollCount).toFixed(1);
+empty.style.display = 'none';
+
+list.innerHTML = rollHistory.map(function (e) {
+    var noteHtml = e.note
+        ? '<div class="log-note">' + e.note + '</div>'
+        : '';
+    var modHtml = e.modText
+        ? '<span class="log-mod ' + e.modClass + '">(' + e.modText + ')</span>'
+        : '';
+
+    return '<li class="log-entry">'
+         +   '<div class="log-num">#' + e.number + '</div>'
+         +   '<div class="log-body">'
+         +     noteHtml
+         +     '<div class="log-total-line">'
+         +       '<span class="log-score">' + e.displayTotal + '</span>'
+         +       '<span class="log-desc">'  + e.diceDesc     + '</span>'
+         +       modHtml
+         +     '</div>'
+         +     '<div class="log-pips">' + e.pipStr + '</div>'
+         +   '</div>'
+         +   '<div class="log-time">' + e.timeStr + '</div>'
+         + '</li>';
+}).join('');
+```
+
 }
+
+// ── Update stats bar ──────────────────────────────────────────────
+
+function updateStats() {
+var bar = el(‘statsBar’);
+bar.style.display = ‘flex’;
+el(‘statRolls’).textContent = rollCount;
+el(‘statTotal’).textContent = sessionTotal;
+el(‘statHigh’).textContent  = sessionHigh;
+el(‘statAvg’).textContent   = (sessionTotal / rollCount).toFixed(1);
+}
+
+// ── Clear log ─────────────────────────────────────────────────────
 
 el(‘clearLogBtn’).addEventListener(‘click’, function () {
 rollHistory.length = 0;
@@ -1840,7 +1448,7 @@ renderLog();
 el(‘statsBar’).style.display = ‘none’;
 MurderSound.clear();
 });
-</script>
 
+</script>
 </body>
 </html>
