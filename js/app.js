@@ -23,7 +23,7 @@ MurderSound.click();
 });
 
 /* Modifier buttons */
-el(‘modDown’).addEventListener(‘click’, function () { modifier–; updateModDisplay(); MurderSound.click(); });
+el(‘modDown’).addEventListener(‘click’, function () { modifier-; updateModDisplay(); MurderSound.click(); });
 el(‘modUp’).addEventListener(‘click’,   function () { modifier++; updateModDisplay(); MurderSound.click(); });
 
 function updateModDisplay() {
