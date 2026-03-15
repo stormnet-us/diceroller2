@@ -11,32 +11,37 @@ var rollCount    = 0;
 var sessionTotal = 0;
 var sessionHigh  = null;
 
-// Numpad state
 var numpadSide    = null;
 var numpadCurrent = ‘’;
 
 function el(id) { return document.getElementById(id); }
 function randomInt(max) { return Math.floor(Math.random() * max) + 1; }
 
-/* ── Counter +/- buttons ─────────────────────────────────── */
+/* ── Dice grid — single handler for both +/- and count tap ── */
 
 el(‘diceGrid’).addEventListener(‘click’, function (e) {
-var btn = e.target.closest(’.cnt-btn’);
-if (!btn) return;
-var side  = parseInt(btn.getAttribute(‘data-side’),  10);
-var delta = parseInt(btn.getAttribute(‘data-delta’), 10);
-setCount(side, counts[side] + delta);
-el(‘error’).style.display = ‘none’;
-MurderSound.click();
-});
 
-/* ── Tap count input → open numpad ──────────────────────── */
+```
+// +/- counter buttons
+var btn = e.target.closest('.cnt-btn');
+if (btn) {
+    var side  = parseInt(btn.getAttribute('data-side'),  10);
+    var delta = parseInt(btn.getAttribute('data-delta'), 10);
+    setCount(side, counts[side] + delta);
+    el('error').style.display = 'none';
+    MurderSound.click();
+    return;
+}
 
-el(‘diceGrid’).addEventListener(‘click’, function (e) {
-var input = e.target.closest(’.cnt-val’);
-if (!input) return;
-var side = parseInt(input.id.replace(‘cnt-’, ‘’), 10);
-openNumpad(side);
+// Tap the count value → open numpad
+var input = e.target.closest('.cnt-val');
+if (input) {
+    var side = parseInt(input.id.replace('cnt-', ''), 10);
+    openNumpad(side);
+    return;
+}
+```
+
 });
 
 /* ── Set count helper ────────────────────────────────────── */
@@ -47,7 +52,7 @@ el(‘cnt-’ + side).value = counts[side];
 el(‘card-’ + side).classList.toggle(‘active’, counts[side] > 0);
 }
 
-/* ── Clear grid button ───────────────────────────────────── */
+/* ── Clear dice grid button ──────────────────────────────── */
 
 el(‘clearGridBtn’).addEventListener(‘click’, function () {
 SIDES.forEach(function (s) { setCount(s, 0); });
@@ -73,7 +78,7 @@ el(‘modDown’).addEventListener(‘click’, function () { modifier–; updat
 el(‘modUp’).addEventListener(‘click’,   function () { modifier++; updateModDisplay(); MurderSound.click(); });
 
 function updateModDisplay() {
-var input = el(‘modifier’);
+var input       = el(‘modifier’);
 input.value     = modifier >= 0 ? ‘+’ + modifier : String(modifier);
 input.className = ‘mod-val’ + (modifier > 0 ? ’ positive’ : modifier < 0 ? ’ negative’ : ‘’);
 }
@@ -82,7 +87,7 @@ input.className = ‘mod-val’ + (modifier > 0 ? ’ positive’ : modifier < 0
 
 function openNumpad(side) {
 numpadSide    = side;
-numpadCurrent = String(counts[side] === 0 ? ‘’ : counts[side]);
+numpadCurrent = counts[side] > 0 ? String(counts[side]) : ‘’;
 el(‘numpadDieLabel’).textContent = ‘d’ + side;
 el(‘numpadDisplay’).textContent  = numpadCurrent || ‘0’;
 el(‘numpadOverlay’).classList.add(‘active’);
@@ -95,65 +100,65 @@ numpadSide    = null;
 numpadCurrent = ‘’;
 }
 
-el(‘numpadOverlay’).addEventListener(‘click’, function (e) {
-// Tap outside modal = cancel
-if (e.target === el(‘numpadOverlay’)) { closeNumpad(); }
-});
-
-el(‘numpadCancel’).addEventListener(‘click’, closeNumpad);
-
-el(‘numpadConfirm’).addEventListener(‘click’, function () {
-if (numpadSide !== null) {
-var val = parseInt(numpadCurrent, 10) || 0;
-setCount(numpadSide, val);
-el(‘error’).style.display = ‘none’;
-MurderSound.click();
-}
-closeNumpad();
-});
-
-el(‘numpadConfirm’).addEventListener(‘click’, function () {
-if (numpadSide !== null) {
-var val = parseInt(numpadCurrent, 10) || 0;
-setCount(numpadSide, val);
-el(‘error’).style.display = ‘none’;
-}
-closeNumpad();
-});
-
-// Numpad key presses
-el(‘numpadOverlay’).addEventListener(‘click’, function (e) {
-var key = e.target.closest(’.nk’);
-if (!key) return;
-var val = key.getAttribute(‘data-val’);
-numpadAction(val);
-});
-
 function numpadAction(val) {
 if (val === ‘clear’) {
 numpadCurrent = ‘’;
 } else if (val === ‘back’) {
 numpadCurrent = numpadCurrent.slice(0, -1);
 } else {
-// Cap at 2 digits (max 99 dice)
-if (numpadCurrent.length >= 2) return;
+if (numpadCurrent.length >= 2) return;  // max 99
 numpadCurrent += val;
 // Strip leading zero
-numpadCurrent = String(parseInt(numpadCurrent, 10) || 0);
-if (numpadCurrent === ‘0’) numpadCurrent = ‘’;
+var parsed = parseInt(numpadCurrent, 10);
+numpadCurrent = parsed ? String(parsed) : ‘’;
 }
 el(‘numpadDisplay’).textContent = numpadCurrent || ‘0’;
 MurderSound.click();
 }
 
-// Physical keyboard support while numpad is open
+// Single overlay click handler — keys, close-on-backdrop, prevent modal close
+el(‘numpadOverlay’).addEventListener(‘click’, function (e) {
+
+```
+// Tap backdrop (the overlay itself, not the modal inside) → close
+if (e.target === el('numpadOverlay')) {
+    closeNumpad();
+    return;
+}
+
+// Numpad digit/action keys
+var key = e.target.closest('.nk');
+if (key) {
+    numpadAction(key.getAttribute('data-val'));
+    return;
+}
+```
+
+});
+
+// Cancel button
+el(‘numpadCancel’).addEventListener(‘click’, function () {
+closeNumpad();
+});
+
+// Confirm button — single listener
+el(‘numpadConfirm’).addEventListener(‘click’, function () {
+if (numpadSide !== null) {
+setCount(numpadSide, parseInt(numpadCurrent, 10) || 0);
+el(‘error’).style.display = ‘none’;
+}
+closeNumpad();
+MurderSound.click();
+});
+
+// Physical keyboard while numpad is open
 document.addEventListener(‘keydown’, function (e) {
 if (!el(‘numpadOverlay’).classList.contains(‘active’)) return;
-if (e.key >= ‘0’ && e.key <= ‘9’) { numpadAction(e.key); return; }
-if (e.key === ‘Backspace’)         { numpadAction(‘back’); return; }
-if (e.key === ‘Escape’)            { closeNumpad(); return; }
+if (e.key >= ‘0’ && e.key <= ‘9’) { numpadAction(e.key);       return; }
+if (e.key === ‘Backspace’)         { numpadAction(‘back’);       return; }
+if (e.key === ‘Delete’)            { numpadAction(‘clear’);      return; }
+if (e.key === ‘Escape’)            { closeNumpad();              return; }
 if (e.key === ‘Enter’)             { el(‘numpadConfirm’).click(); return; }
-if (e.key === ‘Delete’)            { numpadAction(‘clear’); return; }
 });
 
 /* ── Roll button ─────────────────────────────────────────── */
@@ -172,6 +177,7 @@ return;
 el(‘error’).style.display = ‘none’;
 
 ```
+// Shake active cards
 SIDES.forEach(function (s) {
     if (counts[s] > 0) {
         var card = el('card-' + s);
@@ -182,6 +188,7 @@ SIDES.forEach(function (s) {
     }
 });
 
+// Pulse roll button
 var rollBtn = el('rollButton');
 rollBtn.classList.remove('rolling');
 void rollBtn.offsetWidth;
@@ -207,16 +214,16 @@ totalEl.textContent = '';
 diceEl.innerHTML    = '';
 overlay.classList.add('active');
 
-var activeSides = SIDES.filter(function (s) { return counts[s] > 0; });
-var dieEls      = [];
-
-activeSides.forEach(function (s) {
-    for (var i = 0; i < counts[s]; i++) {
-        var d = document.createElement('div');
-        d.className   = 'overlay-die';
-        d.textContent = randomInt(s);
-        diceEl.appendChild(d);
-        dieEls.push({ el: d, sides: s });
+var dieEls = [];
+SIDES.forEach(function (s) {
+    if (counts[s] > 0) {
+        for (var i = 0; i < counts[s]; i++) {
+            var d = document.createElement('div');
+            d.className   = 'overlay-die';
+            d.textContent = randomInt(s);
+            diceEl.appendChild(d);
+            dieEls.push({ el: d, sides: s });
+        }
     }
 });
 
@@ -227,21 +234,21 @@ var scrambleInterval = setInterval(function () {
 setTimeout(function () {
     clearInterval(scrambleInterval);
     var result = compute();
+    var idx    = 0;
 
-    var idx = 0;
     result.breakdown.forEach(function (b) {
         b.rolls.forEach(function (r) {
             if (dieEls[idx]) {
-                dieEls[idx].el.textContent        = r;
-                dieEls[idx].el.style.animation    = 'none';
-                dieEls[idx].el.style.color        = r === b.sides ? '#c9a84c' : r === 1 ? '#555' : '#c0001a';
+                dieEls[idx].el.textContent     = r;
+                dieEls[idx].el.style.animation = 'none';
+                dieEls[idx].el.style.color     = r === b.sides ? '#c9a84c' : r === 1 ? '#555' : '#c0001a';
             }
             idx++;
         });
     });
 
-    var displayTotal = result.grandTotal + modifier;
-    totalEl.textContent = displayTotal;
+    var displayTotal        = result.grandTotal + modifier;
+    totalEl.textContent     = displayTotal;
     setTimeout(function () { totalEl.classList.add('slam'); }, 30);
 
     MurderSound.impact();
@@ -263,7 +270,7 @@ setTimeout(function () {
 
 }
 
-/* ── Compute ─────────────────────────────────────────────── */
+/* ── Compute rolls ───────────────────────────────────────── */
 
 function compute() {
 var grandTotal = 0;
@@ -318,7 +325,7 @@ el('results').innerHTML = html;
 
 }
 
-/* ── Log ─────────────────────────────────────────────────── */
+/* ── Roll log ────────────────────────────────────────────── */
 
 function addToLog(total, breakdown) {
 rollCount++;
@@ -331,15 +338,16 @@ var timeStr  = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-d
 var diceDesc = breakdown.map(function (b) { return b.rolls.length + b.label; }).join('+');
 var note     = el('rollNote').value.trim();
 var modText  = '', modClass = '';
-if (modifier > 0)      { modText = '+' + modifier; modClass = 'positive'; }
-else if (modifier < 0) { modText = String(modifier); modClass = 'negative'; }
+if (modifier > 0)      { modText = '+' + modifier;     modClass = 'positive'; }
+else if (modifier < 0) { modText = String(modifier);   modClass = 'negative'; }
 
 var pipStr = breakdown.map(function (b) {
     return '<span class="pl">' + b.label + ':</span> ' + b.rolls.join(', ');
 }).join('  |  ');
 
 rollHistory.unshift({ number: rollCount, displayTotal: displayTotal, diceDesc: diceDesc,
-                      note: note, modText: modText, modClass: modClass, pipStr: pipStr, timeStr: timeStr });
+                      note: note, modText: modText, modClass: modClass,
+                      pipStr: pipStr, timeStr: timeStr });
 renderLog();
 updateStats();
 ```
@@ -349,10 +357,14 @@ updateStats();
 function renderLog() {
 var list  = el(‘log-list’);
 var empty = el(‘log-empty’);
-if (rollHistory.length === 0) { empty.style.display = ‘block’; list.innerHTML = ‘’; return; }
+if (rollHistory.length === 0) {
+empty.style.display = ‘block’;
+list.innerHTML      = ‘’;
+return;
+}
 empty.style.display = ‘none’;
 list.innerHTML = rollHistory.map(function (e) {
-var noteHtml = e.note ? ‘<div class="log-note">’ + e.note + ‘</div>’ : ‘’;
+var noteHtml = e.note    ? ‘<div class="log-note">’ + e.note + ‘</div>’ : ‘’;
 var modHtml  = e.modText ? ‘<span class="log-mod ' + e.modClass + '">(’ + e.modText + ‘)</span>’ : ‘’;
 return ‘<li class="log-entry">’
 +   ‘<div class="log-num">#’ + e.number + ‘</div>’
@@ -380,7 +392,9 @@ el(‘statAvg’).textContent    = (sessionTotal / rollCount).toFixed(1);
 
 el(‘clearLogBtn’).addEventListener(‘click’, function () {
 rollHistory.length = 0;
-rollCount = 0; sessionTotal = 0; sessionHigh = null;
+rollCount    = 0;
+sessionTotal = 0;
+sessionHigh  = null;
 renderLog();
 el(‘statsBar’).style.display = ‘none’;
 MurderSound.clear();
