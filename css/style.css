@@ -214,7 +214,11 @@ body::after {
     font-size: 1rem;
     text-align: center;
     outline: none;
+    cursor: pointer;
+    transition: color 0.15s, background 0.15s;
 }
+
+.cnt-val:hover { background: var(--ash); color: var(--gold); }
 
 /* ── MODIFIER ── */
 .modifier-row {
@@ -684,6 +688,151 @@ body::after {
 .log-pips  { font-size: 0.65rem; color: #464646; }
 .log-pips .pl { color: var(--gold-dim); }
 .log-time  { font-size: 0.62rem; color: #333; white-space: nowrap; padding-top: 4px; }
+
+/* ── CLEAR GRID BUTTON ── */
+.grid-clear-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    animation: fadeUp 0.6s 0.18s ease both;
+}
+
+#clearGridBtn {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    color: var(--dim);
+    background: none;
+    border: 1px solid var(--ash);
+    border-radius: 2px;
+    padding: 8px 20px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: color 0.2s, border-color 0.2s;
+}
+
+#clearGridBtn:hover  { color: var(--ember); border-color: var(--crimson); }
+#clearGridBtn:active { color: var(--ember); border-color: var(--crimson); }
+
+/* ── NUMPAD MODAL ── */
+.numpad-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(8,8,8,0.88);
+    z-index: 500;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.numpad-overlay.active {
+    display: flex;
+    animation: overlayIn 0.15s ease both;
+}
+
+.numpad-modal {
+    background: var(--shadow);
+    border: 1px solid var(--mist);
+    border-bottom: none;
+    border-radius: 6px 6px 0 0;
+    padding: 20px 20px 28px;
+    width: 100%;
+    max-width: 360px;
+    animation: numpadUp 0.25s cubic-bezier(0.22,1,0.36,1) both;
+}
+
+@keyframes numpadUp {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0); }
+}
+
+.numpad-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.2em;
+    color: var(--dim);
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.numpad-title span { color: var(--gold); }
+
+.numpad-display {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.5rem;
+    color: var(--ember);
+    text-align: center;
+    line-height: 1;
+    margin-bottom: 16px;
+    min-height: 3.5rem;
+    text-shadow: 0 0 20px rgba(255,64,64,0.3);
+    letter-spacing: 0.05em;
+}
+
+.numpad-keys {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.nk {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.1em;
+    color: var(--bone);
+    background: var(--ash);
+    border: 1px solid var(--mist);
+    border-radius: 3px;
+    padding: 14px 0;
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.nk:hover  { background: var(--mist); }
+.nk:active { background: var(--crimson); border-color: var(--crimson); color: #fff; }
+
+.nk-clear         { color: var(--gold); }
+.nk-back          { color: var(--bone); font-size: 1.2rem; }
+.nk-clear:active  { background: var(--gold-dim); border-color: var(--gold-dim); color: #fff; }
+
+.numpad-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.numpad-cancel,
+.numpad-confirm {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.2em;
+    padding: 14px 0;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.numpad-cancel {
+    background: var(--ash);
+    color: var(--dim);
+    border: 1px solid var(--mist);
+}
+
+.numpad-cancel:hover  { color: var(--bone); background: var(--mist); }
+.numpad-cancel:active { transform: scale(0.97); }
+
+.numpad-confirm {
+    background: var(--blood);
+    color: #fff;
+}
+
+.numpad-confirm:hover  { background: var(--crimson); }
+.numpad-confirm:active { transform: scale(0.97); }
 
 /* ── ANIMATIONS ── */
 @keyframes fadeDown {
