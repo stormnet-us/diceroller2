@@ -94,6 +94,39 @@
 
 </div>
 
+<!-- CLEAR DICE GRID BUTTON -->
+<div class="grid-clear-wrap">
+    <button id="clearGridBtn">&#9670; Clear Dice &#9670;</button>
+</div>
+
+<!-- NUMPAD MODAL -->
+<div class="numpad-overlay" id="numpadOverlay">
+    <div class="numpad-modal">
+        <div class="numpad-title">
+            Set quantity — <span id="numpadDieLabel">d?</span>
+        </div>
+        <div class="numpad-display" id="numpadDisplay">0</div>
+        <div class="numpad-keys">
+            <button class="nk" data-val="7">7</button>
+            <button class="nk" data-val="8">8</button>
+            <button class="nk" data-val="9">9</button>
+            <button class="nk" data-val="4">4</button>
+            <button class="nk" data-val="5">5</button>
+            <button class="nk" data-val="6">6</button>
+            <button class="nk" data-val="1">1</button>
+            <button class="nk" data-val="2">2</button>
+            <button class="nk" data-val="3">3</button>
+            <button class="nk nk-clear" data-val="clear">C</button>
+            <button class="nk" data-val="0">0</button>
+            <button class="nk nk-back" data-val="back">&#9003;</button>
+        </div>
+        <div class="numpad-actions">
+            <button class="numpad-cancel" id="numpadCancel">Cancel</button>
+            <button class="numpad-confirm" id="numpadConfirm">Set</button>
+        </div>
+    </div>
+</div>
+
 <!-- MODIFIER -->
 <div class="modifier-row">
     <label class="mod-label" for="modifier">Modifier</label>
