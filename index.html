@@ -1,1454 +1,166 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#080808">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Murder Inc — Dice Roller</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    <style>
-/* ============================================================
-   Murder Inc Dice Roller — style.css
-   ============================================================ */
-
-:root {
-–blood:    #7a0000;
-–crimson:  #c0001a;
-–ember:    #ff4040;
-–gold:     #c9a84c;
-–gold-dim: #6e5a28;
-–ink:      #080808;
-–shadow:   #101010;
-–smoke:    #181818;
-–ash:      #252525;
-–mist:     #353535;
-–bone:     #ddd5c8;
-–dim:      #666;
-–green:    #4caf50;
-–red:      #e53935;
-}
-
-*, *::before, *::after {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
-}
-
-body {
-font-family: ‘Share Tech Mono’, monospace;
-background-color: var(–ink);
-color: var(–bone);
-min-height: 100vh;
-overflow-x: hidden;
-background-image:
-radial-gradient(ellipse 80% 50% at 50% -10%, rgba(122,0,0,0.25) 0%, transparent 70%),
-repeating-linear-gradient(0deg,  transparent, transparent 49px, rgba(255,255,255,0.018) 50px),
-repeating-linear-gradient(90deg, transparent, transparent 49px, rgba(255,255,255,0.018) 50px);
-}
-
-/* Scanline overlay */
-body::after {
-content: ‘’;
-position: fixed;
-inset: 0;
-background: repeating-linear-gradient(
-0deg,
-rgba(0,0,0,0.06) 0px,
-rgba(0,0,0,0.06) 1px,
-transparent 1px,
-transparent 3px
-);
-pointer-events: none;
-z-index: 9999;
-}
-
-/* ── LAYOUT ── */
-.wrap {
-max-width: 680px;
-margin: 0 auto;
-padding: 52px 24px 80px;
-display: flex;
-flex-direction: column;
-align-items: center;
-position: relative;
-}
-
-/* ── HEADER ── */
-.header {
-text-align: center;
-margin-bottom: 48px;
-animation: fadeDown 0.7s ease both;
-}
-
-.eyebrow {
-font-size: 0.62rem;
-letter-spacing: 0.45em;
-color: var(–gold-dim);
-text-transform: uppercase;
-margin-bottom: 10px;
-}
-
-.title {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: clamp(3rem, 11vw, 6rem);
-line-height: 0.88;
-letter-spacing: 0.06em;
-color: var(–crimson);
-text-shadow:
-0 0 25px rgba(192,0,26,0.55),
-0 0 70px rgba(122,0,0,0.25),
-3px 3px 0 #000;
-}
-
-.title .sub {
-display: block;
-color: var(–bone);
-font-size: 0.25em;
-letter-spacing: 0.18em;
-text-shadow: none;
-padding-left: 0.1em;
-margin-top: 6px;
-line-height: 1.3;
-}
-
-.ornament {
-display: flex;
-align-items: center;
-justify-content: center;
-gap: 10px;
-margin-top: 18px;
-}
-
-.orn-line {
-height: 1px;
-width: 72px;
-background: linear-gradient(90deg, transparent, var(–gold-dim));
-}
-.orn-line.right {
-background: linear-gradient(90deg, var(–gold-dim), transparent);
-}
-.orn-diamond { color: var(–gold); font-size: 0.5rem; }
-.orn-text    { font-size: 0.6rem; letter-spacing: 0.35em; color: var(–gold-dim); text-transform: uppercase; }
-
-/* ── DICE GRID ── */
-.dice-grid {
-display: grid;
-grid-template-columns: repeat(3, 1fr);
-gap: 12px;
-width: 100%;
-margin-bottom: 24px;
-animation: fadeUp 0.6s 0.15s ease both;
-}
-
-.die-card {
-background: var(–shadow);
-border: 1px solid var(–ash);
-border-bottom: 2px solid var(–ash);
-border-radius: 3px;
-padding: 18px 10px 14px;
-display: flex;
-flex-direction: column;
-align-items: center;
-gap: 10px;
-transition: border-color 0.25s, box-shadow 0.25s, transform 0.15s;
-}
-
-.die-card:hover {
-transform: translateY(-2px);
-border-color: var(–mist);
-}
-
-.die-card.active {
-border-color: var(–crimson);
-border-bottom-color: var(–blood);
-box-shadow: 0 0 22px rgba(192,0,26,0.18), inset 0 0 30px rgba(122,0,0,0.06);
-}
-
-.die-glyph {
-font-size: 2rem;
-line-height: 1;
-color: var(–ash);
-transition: color 0.25s, filter 0.25s;
-user-select: none;
-display: inline-block;
-}
-
-.die-card.active .die-glyph {
-color: var(–crimson);
-filter: drop-shadow(0 0 6px rgba(192,0,26,0.6));
-}
-
-.die-name {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 1.05rem;
-letter-spacing: 0.15em;
-color: var(–dim);
-transition: color 0.25s;
-}
-
-.die-card.active .die-name { color: var(–bone); }
-
-.counter {
-display: flex;
-align-items: center;
-}
-
-.cnt-btn {
-width: 30px;
-height: 30px;
-background: var(–ash);
-border: 1px solid var(–mist);
-color: var(–bone);
-font-size: 1.1rem;
-cursor: pointer;
-display: flex;
-align-items: center;
-justify-content: center;
-transition: background 0.15s, border-color 0.15s;
-font-family: ‘Share Tech Mono’, monospace;
-line-height: 1;
-}
-
-.cnt-btn:first-child { border-radius: 2px 0 0 2px; }
-.cnt-btn:last-child  { border-radius: 0 2px 2px 0; }
-.cnt-btn:hover       { background: var(–crimson); border-color: var(–crimson); }
-
-.cnt-val {
-width: 34px;
-height: 30px;
-background: var(–smoke);
-border: 1px solid var(–mist);
-border-left: none;
-border-right: none;
-color: var(–bone);
-font-family: ‘Share Tech Mono’, monospace;
-font-size: 1rem;
-text-align: center;
-outline: none;
-}
-
-/* ── MODIFIER ── */
-.modifier-row {
-display: flex;
-align-items: center;
-gap: 14px;
-margin-bottom: 14px;
-animation: fadeUp 0.6s 0.2s ease both;
-}
-
-.mod-label {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 1rem;
-letter-spacing: 0.2em;
-color: var(–gold);
-min-width: 80px;
-}
-
-.mod-controls {
-display: flex;
-align-items: center;
-}
-
-.mod-btn {
-width: 30px;
-height: 30px;
-background: var(–ash);
-border: 1px solid var(–mist);
-color: var(–bone);
-font-size: 1.1rem;
-cursor: pointer;
-display: flex;
-align-items: center;
-justify-content: center;
-transition: background 0.15s;
-font-family: ‘Share Tech Mono’, monospace;
-line-height: 1;
-}
-
-.mod-btn:first-child { border-radius: 2px 0 0 2px; }
-.mod-btn:last-child  { border-radius: 0 2px 2px 0; }
-.mod-btn:hover       { background: var(–gold-dim); border-color: var(–gold-dim); }
-
-.mod-val {
-width: 46px;
-height: 30px;
-background: var(–smoke);
-border: 1px solid var(–mist);
-border-left: none;
-border-right: none;
-color: var(–gold);
-font-family: ‘Share Tech Mono’, monospace;
-font-size: 1rem;
-text-align: center;
-outline: none;
-}
-
-.mod-val.positive { color: var(–green); }
-.mod-val.negative { color: var(–red); }
-
-.mod-hint {
-font-size: 0.6rem;
-letter-spacing: 0.1em;
-color: var(–dim);
-}
-
-/* ── ROLL NOTE ── */
-.note-row {
-width: 100%;
-margin-bottom: 24px;
-animation: fadeUp 0.6s 0.25s ease both;
-}
-
-.note-input {
-width: 100%;
-background: var(–smoke);
-border: 1px solid var(–ash);
-border-radius: 3px;
-color: var(–bone);
-font-family: ‘Share Tech Mono’, monospace;
-font-size: 0.8rem;
-padding: 10px 14px;
-outline: none;
-letter-spacing: 0.05em;
-transition: border-color 0.2s;
-}
-
-.note-input::placeholder { color: var(–dim); }
-.note-input:focus { border-color: var(–gold-dim); }
-
-/* ── ROLL BUTTON ── */
-.roll-btn-wrap {
-display: flex;
-flex-direction: column;
-align-items: center;
-gap: 10px;
-margin-bottom: 24px;
-animation: fadeUp 0.6s 0.3s ease both;
-}
-
-#rollButton {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 1.6rem;
-letter-spacing: 0.25em;
-color: #fff;
-background: var(–blood);
-border: none;
-padding: 18px 72px;
-cursor: pointer;
-clip-path: polygon(14px 0%, 100% 0%, calc(100% - 14px) 100%, 0% 100%);
-transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
-text-shadow: 0 1px 3px rgba(0,0,0,0.5);
-position: relative;
-}
-
-#rollButton:hover {
-background: var(–crimson);
-box-shadow: 0 0 30px rgba(192,0,26,0.4), 0 0 60px rgba(122,0,0,0.2);
-transform: scale(1.03);
-}
-
-#rollButton:active { transform: scale(0.97); }
-
-#rollButton.rolling { animation: btnPulse 0.55s ease; }
-
-#clearDiceBtn {
-font-size: 0.65rem;
-letter-spacing: 0.25em;
-color: var(–dim);
-background: none;
-border: none;
-cursor: pointer;
-text-transform: uppercase;
-transition: color 0.2s;
-font-family: ‘Share Tech Mono’, monospace;
-}
-
-#clearDiceBtn:hover { color: var(–gold); }
-
-/* ── ERROR ── */
-.error-msg {
-font-size: 0.8rem;
-letter-spacing: 0.15em;
-color: var(–gold);
-display: none;
-margin-bottom: 20px;
-}
-
-/* ── ROLL OVERLAY ANIMATION ── */
-.roll-overlay {
-display: none;
-position: fixed;
-inset: 0;
-background: rgba(8,8,8,0.92);
-z-index: 1000;
-align-items: center;
-justify-content: center;
-flex-direction: column;
-}
-
-.roll-overlay.active {
-display: flex;
-animation: overlayIn 0.15s ease both;
-}
-
-.roll-overlay-inner {
-text-align: center;
-}
-
-.overlay-dice {
-display: flex;
-gap: 16px;
-justify-content: center;
-flex-wrap: wrap;
-margin-bottom: 32px;
-min-height: 80px;
-align-items: center;
-}
-
-.overlay-die {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 2.8rem;
-color: var(–crimson);
-min-width: 60px;
-text-align: center;
-animation: dieFlip 0.12s ease infinite;
-text-shadow: 0 0 20px rgba(192,0,26,0.7);
-}
-
-.overlay-total {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: clamp(5rem, 20vw, 10rem);
-color: var(–ember);
-line-height: 1;
-text-shadow: 0 0 40px rgba(255,64,64,0.6), 0 0 100px rgba(192,0,26,0.3);
-opacity: 0;
-transform: scale(0.5);
-transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.22,1,0.36,1);
-}
-
-.overlay-total.slam {
-opacity: 1;
-transform: scale(1);
-}
-
-/* ── RESULTS ── */
-#results {
-width: 100%;
-margin-bottom: 48px;
-}
-
-.result-total {
-background: var(–shadow);
-border: 1px solid var(–ash);
-border-top: 3px solid var(–crimson);
-padding: 24px;
-text-align: center;
-margin-bottom: 10px;
-position: relative;
-overflow: hidden;
-animation: resultReveal 0.4s cubic-bezier(0.22,1,0.36,1) both;
-}
-
-.result-total::before {
-content: ‘’;
-position: absolute;
-inset: 0;
-background: radial-gradient(ellipse at 50% -20%, rgba(192,0,26,0.1) 0%, transparent 70%);
-pointer-events: none;
-}
-
-.result-label {
-font-size: 0.6rem;
-letter-spacing: 0.45em;
-color: var(–dim);
-text-transform: uppercase;
-margin-bottom: 4px;
-}
-
-.result-note {
-font-size: 0.75rem;
-letter-spacing: 0.15em;
-color: var(–gold);
-margin-bottom: 6px;
-font-style: italic;
-}
-
-.result-number {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: clamp(4rem, 16vw, 8rem);
-line-height: 1;
-color: var(–ember);
-text-shadow: 0 0 30px rgba(255,64,64,0.4);
-}
-
-.result-modifier {
-font-size: 0.8rem;
-letter-spacing: 0.2em;
-margin-top: 4px;
-}
-
-.result-modifier.positive { color: var(–green); }
-.result-modifier.negative { color: var(–red); }
-.result-modifier.zero     { color: var(–dim); }
-
-.result-meta {
-font-size: 0.62rem;
-letter-spacing: 0.2em;
-color: var(–dim);
-margin-top: 6px;
-}
-
-.breakdown-row {
-background: var(–shadow);
-border: 1px solid var(–ash);
-border-top: none;
-padding: 10px 18px;
-display: flex;
-align-items: center;
-gap: 14px;
-animation: resultReveal 0.35s ease both;
-}
-
-.bd-die {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 1rem;
-letter-spacing: 0.1em;
-color: var(–gold);
-min-width: 38px;
-}
-
-.bd-pips {
-display: flex;
-flex-wrap: wrap;
-gap: 5px;
-flex: 1;
-}
-
-.pip {
-font-size: 0.78rem;
-background: var(–ash);
-border: 1px solid var(–mist);
-border-radius: 2px;
-padding: 2px 8px;
-color: var(–bone);
-}
-
-.pip.is-max { border-color: var(–gold);  color: var(–gold);  background: rgba(201,168,76,0.08); }
-.pip.is-min { color: #3d3d3d; border-color: #1e1e1e; }
-
-.bd-sub {
-font-size: 0.72rem;
-color: var(–dim);
-min-width: 42px;
-text-align: right;
-}
-
-/* ── LOG ── */
-.log-section {
-width: 100%;
-animation: fadeUp 0.6s 0.4s ease both;
-}
-
-.log-header {
-display: flex;
-align-items: center;
-justify-content: space-between;
-margin-bottom: 16px;
-padding-bottom: 12px;
-border-bottom: 1px solid var(–ash);
-}
-
-.log-title {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 1.4rem;
-letter-spacing: 0.25em;
-color: var(–gold);
-}
-
-.log-title-sub {
-font-size: 0.58rem;
-letter-spacing: 0.18em;
-color: var(–dim);
-margin-top: 2px;
-}
-
-#clearLogBtn {
-font-size: 0.62rem;
-letter-spacing: 0.2em;
-text-transform: uppercase;
-color: var(–dim);
-background: none;
-border: 1px solid var(–ash);
-padding: 6px 14px;
-cursor: pointer;
-border-radius: 2px;
-transition: color 0.2s, border-color 0.2s;
-font-family: ‘Share Tech Mono’, monospace;
-}
-
-#clearLogBtn:hover { color: var(–ember); border-color: var(–crimson); }
-
-/* Stats bar */
-.stats-bar {
-display: none;
-width: 100%;
-margin-bottom: 16px;
-border: 1px solid var(–ash);
-border-radius: 3px;
-overflow: hidden;
-}
-
-.stat-cell {
-flex: 1;
-padding: 10px 8px;
-background: var(–shadow);
-text-align: center;
-border-right: 1px solid var(–ash);
-}
-
-.stat-cell:last-child { border-right: none; }
-
-.stat-val {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 1.45rem;
-color: var(–gold);
-line-height: 1;
-}
-
-.stat-lbl {
-font-size: 0.55rem;
-letter-spacing: 0.2em;
-color: var(–dim);
-text-transform: uppercase;
-margin-top: 3px;
-}
-
-#log-empty {
-font-size: 0.8rem;
-color: var(–dim);
-letter-spacing: 0.1em;
-text-align: center;
-padding: 32px 0;
-font-style: italic;
-}
-
-#log-list {
-list-style: none;
-display: flex;
-flex-direction: column;
-gap: 6px;
-}
-
-.log-entry {
-background: var(–shadow);
-border: 1px solid var(–ash);
-border-left: 3px solid var(–blood);
-border-radius: 0 3px 3px 0;
-padding: 12px 16px;
-display: grid;
-grid-template-columns: 32px 1fr auto;
-align-items: start;
-gap: 12px;
-animation: logSlide 0.3s cubic-bezier(0.22,1,0.36,1) both;
-transition: border-left-color 0.2s, background 0.2s;
-}
-
-.log-entry:hover            { background: #141414; border-left-color: var(–crimson); }
-.log-entry:first-child      { border-left-color: var(–crimson); }
-
-.log-num   { font-size: 0.62rem; color: var(–dim); padding-top: 4px; }
-
-.log-total-line {
-display: flex;
-align-items: baseline;
-gap: 8px;
-margin-bottom: 2px;
-flex-wrap: wrap;
-}
-
-.log-score {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 1.9rem;
-line-height: 1;
-color: var(–ember);
-}
-
-.log-entry:first-child .log-score { color: var(–gold); text-shadow: 0 0 20px rgba(201,168,76,0.3); }
-
-.log-desc { font-size: 0.68rem; color: var(–dim); }
-
-.log-note {
-font-size: 0.68rem;
-color: var(–gold-dim);
-font-style: italic;
-letter-spacing: 0.05em;
-margin-bottom: 3px;
-}
-
-.log-mod {
-font-size: 0.65rem;
-letter-spacing: 0.05em;
-}
-.log-mod.positive { color: var(–green); }
-.log-mod.negative { color: var(–red); }
-
-.log-pips  { font-size: 0.65rem; color: #464646; }
-.log-pips .pl { color: var(–gold-dim); }
-.log-time  { font-size: 0.62rem; color: #333; white-space: nowrap; padding-top: 4px; }
-
-/* ── ANIMATIONS ── */
-@keyframes fadeDown {
-from { opacity: 0; transform: translateY(-20px); }
-to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeUp {
-from { opacity: 0; transform: translateY(16px); }
-to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes btnPulse {
-0%   { box-shadow: 0 0 0   rgba(192,0,26,0); }
-50%  { box-shadow: 0 0 55px rgba(192,0,26,0.65); }
-100% { box-shadow: 0 0 0   rgba(192,0,26,0); }
-}
-
-@keyframes resultReveal {
-from { opacity: 0; transform: scale(0.97) translateY(8px); }
-to   { opacity: 1; transform: scale(1)    translateY(0); }
-}
-
-@keyframes logSlide {
-from { opacity: 0; transform: translateX(-14px); }
-to   { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes overlayIn {
-from { opacity: 0; }
-to   { opacity: 1; }
-}
-
-@keyframes dieFlip {
-0%   { transform: scale(1)    rotateY(0deg); }
-50%  { transform: scale(1.15) rotateY(90deg); }
-100% { transform: scale(1)    rotateY(180deg); }
-}
-
-@keyframes diceShake {
-0%   { transform: rotate(0deg)   translate(0,0); }
-15%  { transform: rotate(-9deg)  translate(-3px, 2px); }
-30%  { transform: rotate(7deg)   translate(3px, -2px); }
-45%  { transform: rotate(-11deg) translate(-2px, 3px); }
-60%  { transform: rotate(8deg)   translate(2px, -1px); }
-75%  { transform: rotate(-4deg)  translate(-1px, 2px); }
-90%  { transform: rotate(3deg)   translate(1px, -1px); }
-100% { transform: rotate(0deg)   translate(0,0); }
-}
-
-.die-card.shaking .die-glyph { animation: diceShake 0.45s ease; }
-
-```
-</style>
-```
-
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <div class="wrap">
 
-```
-<header class="header">
-    <p class="eyebrow">&#9670; Morally Questionable Situations Required this Sites Creation &#9670;</p>
-    <h1 class="title">Murder Inc<span class="sub">A Subsidiary of Mind Your Own Business LLC</span></h1>
-    <div class="ornament">
-        <div class="orn-line"></div>
-        <span class="orn-diamond">&#9670;</span>
-        <span class="orn-text">Dice Roller</span>
-        <span class="orn-diamond">&#9670;</span>
-        <div class="orn-line right"></div>
-    </div>
-</header>
+    <!-- HEADER -->
+    <header class="header">
+        <p class="eyebrow">&#9670; Morally Questionable Choices &#9670;</p>
+        <h1 class="title">Murder<span class="sub">Inc</span></h1>
+        <div class="ornament">
+            <div class="orn-line"></div>
+            <span class="orn-diamond">&#9670;</span>
+            <span class="orn-text">Dice Roller</span>
+            <span class="orn-diamond">&#9670;</span>
+            <div class="orn-line right"></div>
+        </div>
+    </header>
 
-<div class="dice-grid" id="diceGrid">
-    <div class="die-card" id="card-4">
-        <div class="die-glyph">&#9670;</div>
-        <div class="die-name">d4</div>
-        <div class="counter">
-            <button class="cnt-btn" data-side="4" data-delta="-1">-</button>
-            <input class="cnt-val" id="cnt-4" value="0" readonly>
-            <button class="cnt-btn" data-side="4" data-delta="1">+</button>
+    <!-- DICE GRID -->
+    <div class="dice-grid" id="diceGrid">
+
+        <div class="die-card" id="card-4">
+            <div class="die-glyph">&#9670;</div>
+            <div class="die-name">d4</div>
+            <div class="counter">
+                <button class="cnt-btn" data-side="4" data-delta="-1">-</button>
+                <input class="cnt-val" id="cnt-4" value="0" readonly>
+                <button class="cnt-btn" data-side="4" data-delta="1">+</button>
+            </div>
+        </div>
+
+        <div class="die-card" id="card-6">
+            <div class="die-glyph">&#11042;</div>
+            <div class="die-name">d6</div>
+            <div class="counter">
+                <button class="cnt-btn" data-side="6" data-delta="-1">-</button>
+                <input class="cnt-val" id="cnt-6" value="0" readonly>
+                <button class="cnt-btn" data-side="6" data-delta="1">+</button>
+            </div>
+        </div>
+
+        <div class="die-card" id="card-8">
+            <div class="die-glyph">&#9830;</div>
+            <div class="die-name">d8</div>
+            <div class="counter">
+                <button class="cnt-btn" data-side="8" data-delta="-1">-</button>
+                <input class="cnt-val" id="cnt-8" value="0" readonly>
+                <button class="cnt-btn" data-side="8" data-delta="1">+</button>
+            </div>
+        </div>
+
+        <div class="die-card" id="card-10">
+            <div class="die-glyph">&#9900;</div>
+            <div class="die-name">d10</div>
+            <div class="counter">
+                <button class="cnt-btn" data-side="10" data-delta="-1">-</button>
+                <input class="cnt-val" id="cnt-10" value="0" readonly>
+                <button class="cnt-btn" data-side="10" data-delta="1">+</button>
+            </div>
+        </div>
+
+        <div class="die-card" id="card-12">
+            <div class="die-glyph">&#11043;</div>
+            <div class="die-name">d12</div>
+            <div class="counter">
+                <button class="cnt-btn" data-side="12" data-delta="-1">-</button>
+                <input class="cnt-val" id="cnt-12" value="0" readonly>
+                <button class="cnt-btn" data-side="12" data-delta="1">+</button>
+            </div>
+        </div>
+
+        <div class="die-card" id="card-20">
+            <div class="die-glyph">&#11042;</div>
+            <div class="die-name">d20</div>
+            <div class="counter">
+                <button class="cnt-btn" data-side="20" data-delta="-1">-</button>
+                <input class="cnt-val" id="cnt-20" value="0" readonly>
+                <button class="cnt-btn" data-side="20" data-delta="1">+</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- MODIFIER -->
+    <div class="modifier-row">
+        <label class="mod-label" for="modifier">Modifier</label>
+        <div class="mod-controls">
+            <button class="mod-btn" id="modDown">-</button>
+            <input class="mod-val" id="modifier" value="0" readonly>
+            <button class="mod-btn" id="modUp">+</button>
+        </div>
+        <span class="mod-hint">bonus / penalty added to total</span>
+    </div>
+
+    <!-- ROLL NOTE -->
+    <div class="note-row">
+        <input class="note-input" id="rollNote" type="text" maxlength="60" placeholder="Label this roll (optional)...">
+    </div>
+
+    <!-- ROLL BUTTON -->
+    <div class="roll-btn-wrap">
+        <button id="rollButton">&#9670; Roll &#9670;</button>
+        <button id="clearDiceBtn">Reset</button>
+    </div>
+
+    <!-- ERROR -->
+    <p class="error-msg" id="error">&#9670; Select at least one die to roll &#9670;</p>
+
+    <!-- ROLLING ANIMATION OVERLAY -->
+    <div class="roll-overlay" id="rollOverlay">
+        <div class="roll-overlay-inner">
+            <div class="overlay-dice" id="overlayDice"></div>
+            <div class="overlay-total" id="overlayTotal">...</div>
         </div>
     </div>
-    <div class="die-card" id="card-6">
-        <div class="die-glyph">&#11042;</div>
-        <div class="die-name">d6</div>
-        <div class="counter">
-            <button class="cnt-btn" data-side="6" data-delta="-1">-</button>
-            <input class="cnt-val" id="cnt-6" value="0" readonly>
-            <button class="cnt-btn" data-side="6" data-delta="1">+</button>
+
+    <!-- RESULTS -->
+    <div id="results"></div>
+
+    <!-- LOG -->
+    <section class="log-section">
+        <div class="log-header">
+            <div>
+                <div class="log-title">Roll Log</div>
+                <div class="log-title-sub">Cleared on page refresh</div>
+            </div>
+            <button id="clearLogBtn">Clear log</button>
         </div>
-    </div>
-    <div class="die-card" id="card-8">
-        <div class="die-glyph">&#9830;</div>
-        <div class="die-name">d8</div>
-        <div class="counter">
-            <button class="cnt-btn" data-side="8" data-delta="-1">-</button>
-            <input class="cnt-val" id="cnt-8" value="0" readonly>
-            <button class="cnt-btn" data-side="8" data-delta="1">+</button>
+
+        <div class="stats-bar" id="statsBar">
+            <div class="stat-cell">
+                <div class="stat-val" id="statRolls">0</div>
+                <div class="stat-lbl">Rolls</div>
+            </div>
+            <div class="stat-cell">
+                <div class="stat-val" id="statTotal">0</div>
+                <div class="stat-lbl">Grand Total</div>
+            </div>
+            <div class="stat-cell">
+                <div class="stat-val" id="statHigh">—</div>
+                <div class="stat-lbl">Best Roll</div>
+            </div>
+            <div class="stat-cell">
+                <div class="stat-val" id="statAvg">—</div>
+                <div class="stat-lbl">Average</div>
+            </div>
         </div>
-    </div>
-    <div class="die-card" id="card-10">
-        <div class="die-glyph">&#9900;</div>
-        <div class="die-name">d10</div>
-        <div class="counter">
-            <button class="cnt-btn" data-side="10" data-delta="-1">-</button>
-            <input class="cnt-val" id="cnt-10" value="0" readonly>
-            <button class="cnt-btn" data-side="10" data-delta="1">+</button>
-        </div>
-    </div>
-    <div class="die-card" id="card-12">
-        <div class="die-glyph">&#11043;</div>
-        <div class="die-name">d12</div>
-        <div class="counter">
-            <button class="cnt-btn" data-side="12" data-delta="-1">-</button>
-            <input class="cnt-val" id="cnt-12" value="0" readonly>
-            <button class="cnt-btn" data-side="12" data-delta="1">+</button>
-        </div>
-    </div>
-    <div class="die-card" id="card-20">
-        <div class="die-glyph">&#11042;</div>
-        <div class="die-name">d20</div>
-        <div class="counter">
-            <button class="cnt-btn" data-side="20" data-delta="-1">-</button>
-            <input class="cnt-val" id="cnt-20" value="0" readonly>
-            <button class="cnt-btn" data-side="20" data-delta="1">+</button>
-        </div>
-    </div>
+
+        <p id="log-empty">No rolls yet. Let it rip.</p>
+        <ul id="log-list"></ul>
+    </section>
+
 </div>
 
-<div class="grid-clear-wrap">
-    <button id="clearGridBtn">&#9670; Clear Dice &#9670;</button>
-</div>
-
-<div class="numpad-overlay" id="numpadOverlay">
-    <div class="numpad-modal">
-        <div class="numpad-title">Set quantity &mdash; <span id="numpadDieLabel">d?</span></div>
-        <div class="numpad-display" id="numpadDisplay">0</div>
-        <div class="numpad-keys">
-            <button class="nk" data-val="7">7</button>
-            <button class="nk" data-val="8">8</button>
-            <button class="nk" data-val="9">9</button>
-            <button class="nk" data-val="4">4</button>
-            <button class="nk" data-val="5">5</button>
-            <button class="nk" data-val="6">6</button>
-            <button class="nk" data-val="1">1</button>
-            <button class="nk" data-val="2">2</button>
-            <button class="nk" data-val="3">3</button>
-            <button class="nk nk-clear" data-val="clear">C</button>
-            <button class="nk" data-val="0">0</button>
-            <button class="nk nk-back" data-val="back">&#9003;</button>
-        </div>
-        <div class="numpad-actions">
-            <button class="numpad-cancel" id="numpadCancel">Cancel</button>
-            <button class="numpad-confirm" id="numpadConfirm">Set</button>
-        </div>
-    </div>
-</div>
-
-<div class="modifier-row">
-    <label class="mod-label" for="modifier">Modifier</label>
-    <div class="mod-controls">
-        <button class="mod-btn" id="modDown">-</button>
-        <input class="mod-val" id="modifier" value="+0" readonly>
-        <button class="mod-btn" id="modUp">+</button>
-    </div>
-    <span class="mod-hint">bonus / penalty added to total</span>
-</div>
-
-<div class="note-row">
-    <input class="note-input" id="rollNote" type="text" maxlength="60" placeholder="Label this roll (optional)...">
-</div>
-
-<div class="roll-btn-wrap">
-    <button id="rollButton">&#9670; Roll &#9670;</button>
-    <button id="clearDiceBtn">Reset</button>
-</div>
-
-<p class="error-msg" id="error">&#9670; Select at least one die to roll &#9670;</p>
-
-<div class="roll-overlay" id="rollOverlay">
-    <div class="roll-overlay-inner">
-        <div class="overlay-dice" id="overlayDice"></div>
-        <div class="overlay-total" id="overlayTotal"></div>
-    </div>
-</div>
-
-<div id="results"></div>
-
-<section class="log-section">
-    <div class="log-header">
-        <div>
-            <div class="log-title">Roll Log</div>
-            <div class="log-title-sub">Cleared on page refresh</div>
-        </div>
-        <button id="clearLogBtn">Clear log</button>
-    </div>
-    <div class="stats-bar" id="statsBar">
-        <div class="stat-cell"><div class="stat-val" id="statRolls">0</div><div class="stat-lbl">Rolls</div></div>
-        <div class="stat-cell"><div class="stat-val" id="statTotal">0</div><div class="stat-lbl">Grand Total</div></div>
-        <div class="stat-cell"><div class="stat-val" id="statHigh">-</div><div class="stat-lbl">Best Roll</div></div>
-        <div class="stat-cell"><div class="stat-val" id="statAvg">-</div><div class="stat-lbl">Average</div></div>
-    </div>
-    <p id="log-empty">No rolls yet. Let it rip.</p>
-    <ul id="log-list"></ul>
-</section>
-```
-
-</div>
-<script>
-/* ============================================================
-   Murder Inc Dice Roller — sound.js
-   Procedural audio via Web Audio API. No external files needed.
-   ============================================================ */
-
-var MurderSound = (function () {
-
-```
-var ctx = null;
-
-function getCtx() {
-    if (!ctx) {
-        try {
-            ctx = new (window.AudioContext || window.webkitAudioContext)();
-        } catch (e) {
-            return null;
-        }
-    }
-    // Resume if suspended (browser autoplay policy)
-    if (ctx.state === 'suspended') {
-        ctx.resume();
-    }
-    return ctx;
-}
-
-// Generic helper: play an oscillator burst
-function playTone(freq, type, gainVal, duration, fadeStart) {
-    var c = getCtx();
-    if (!c) return;
-
-    var osc  = c.createOscillator();
-    var gain = c.createGain();
-
-    osc.connect(gain);
-    gain.connect(c.destination);
-
-    osc.type      = type || 'sine';
-    osc.frequency.setValueAtTime(freq, c.currentTime);
-
-    gain.gain.setValueAtTime(gainVal, c.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + duration);
-
-    osc.start(c.currentTime);
-    osc.stop(c.currentTime + duration);
-}
-
-// Rattle: multiple short random noise bursts = dice shaking
-function playRattle() {
-    var c = getCtx();
-    if (!c) return;
-
-    var steps = 10;
-    for (var i = 0; i < steps; i++) {
-        (function (i) {
-            setTimeout(function () {
-                var bufSize = c.sampleRate * 0.04;
-                var buf     = c.createBuffer(1, bufSize, c.sampleRate);
-                var data    = buf.getChannelData(0);
-                for (var j = 0; j < bufSize; j++) {
-                    data[j] = (Math.random() * 2 - 1) * 0.4;
-                }
-
-                var src    = c.createBufferSource();
-                var filter = c.createBiquadFilter();
-                var gain   = c.createGain();
-
-                src.buffer = buf;
-                filter.type            = 'bandpass';
-                filter.frequency.value = 800 + Math.random() * 1200;
-                filter.Q.value         = 0.8;
-
-                gain.gain.setValueAtTime(0.35, c.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + 0.06);
-
-                src.connect(filter);
-                filter.connect(gain);
-                gain.connect(c.destination);
-                src.start();
-            }, i * 45);
-        }(i));
-    }
-}
-
-// Impact: low thud when result hits
-function playImpact() {
-    var c = getCtx();
-    if (!c) return;
-
-    // Sub thud
-    var osc1  = c.createOscillator();
-    var gain1 = c.createGain();
-    osc1.type = 'sine';
-    osc1.frequency.setValueAtTime(120, c.currentTime);
-    osc1.frequency.exponentialRampToValueAtTime(40, c.currentTime + 0.25);
-    gain1.gain.setValueAtTime(0.8, c.currentTime);
-    gain1.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + 0.3);
-    osc1.connect(gain1);
-    gain1.connect(c.destination);
-    osc1.start(c.currentTime);
-    osc1.stop(c.currentTime + 0.3);
-
-    // Click transient
-    playTone(280, 'square', 0.25, 0.05);
-}
-
-// High roll flourish: ascending chime
-function playHighRoll() {
-    var c = getCtx();
-    if (!c) return;
-
-    var freqs = [523, 659, 784, 1047];
-    freqs.forEach(function (f, i) {
-        setTimeout(function () {
-            playTone(f, 'sine', 0.18, 0.3);
-        }, i * 70);
-    });
-}
-
-// Low roll sting: descending dissonant tones
-function playLowRoll() {
-    var c = getCtx();
-    if (!c) return;
-
-    playTone(220, 'sawtooth', 0.12, 0.4);
-    setTimeout(function () { playTone(196, 'sawtooth', 0.10, 0.35); }, 80);
-}
-
-// Click: small UI tick for counter buttons
-function playClick() {
-    var c = getCtx();
-    if (!c) return;
-    playTone(600, 'square', 0.06, 0.04);
-}
-
-// Clear: soft whoosh
-function playClear() {
-    var c = getCtx();
-    if (!c) return;
-    playTone(300, 'sine', 0.08, 0.15);
-    setTimeout(function () { playTone(200, 'sine', 0.05, 0.12); }, 60);
-}
-
-return {
-    rattle:   playRattle,
-    impact:   playImpact,
-    highRoll: playHighRoll,
-    lowRoll:  playLowRoll,
-    click:    playClick,
-    clear:    playClear
-};
-```
-
-}());
-
-/* ============================================================
-Murder Inc Dice Roller — app.js
-============================================================ */
-
-var SIDES = [4, 6, 8, 10, 12, 20];
-
-// Die counts
-var counts = { 4: 0, 6: 0, 8: 0, 10: 0, 12: 0, 20: 0 };
-
-// Modifier
-var modifier = 0;
-
-// Roll log
-var rollHistory  = [];
-var rollCount    = 0;
-var sessionTotal = 0;
-var sessionHigh  = null;
-
-// ── Helpers ───────────────────────────────────────────────────────
-
-function el(id) {
-return document.getElementById(id);
-}
-
-function randomInt(max) {
-return Math.floor(Math.random() * max) + 1;
-}
-
-// ── Counter buttons ───────────────────────────────────────────────
-
-el(‘diceGrid’).addEventListener(‘click’, function (e) {
-var btn = e.target.closest(’.cnt-btn’);
-if (!btn) return;
-
-```
-var side  = parseInt(btn.getAttribute('data-side'),  10);
-var delta = parseInt(btn.getAttribute('data-delta'), 10);
-
-counts[side] = Math.max(0, counts[side] + delta);
-el('cnt-' + side).value = counts[side];
-el('card-' + side).classList.toggle('active', counts[side] > 0);
-el('error').style.display = 'none';
-
-MurderSound.click();
-```
-
-});
-
-// ── Modifier buttons ──────────────────────────────────────────────
-
-el(‘modDown’).addEventListener(‘click’, function () {
-modifier–;
-updateModDisplay();
-MurderSound.click();
-});
-
-el(‘modUp’).addEventListener(‘click’, function () {
-modifier++;
-updateModDisplay();
-MurderSound.click();
-});
-
-function updateModDisplay() {
-var input = el(‘modifier’);
-input.value = modifier >= 0 ? ‘+’ + modifier : String(modifier);
-input.className = ‘mod-val’ + (modifier > 0 ? ’ positive’ : modifier < 0 ? ’ negative’ : ‘’);
-}
-
-// ── Reset button ──────────────────────────────────────────────────
-
-el(‘clearDiceBtn’).addEventListener(‘click’, function () {
-SIDES.forEach(function (s) {
-counts[s] = 0;
-el(‘cnt-’ + s).value = 0;
-el(‘card-’ + s).classList.remove(‘active’);
-});
-modifier = 0;
-updateModDisplay();
-el(‘rollNote’).value       = ‘’;
-el(‘results’).innerHTML    = ‘’;
-el(‘error’).style.display  = ‘none’;
-MurderSound.clear();
-});
-
-// ── Roll button ───────────────────────────────────────────────────
-
-el(‘rollButton’).addEventListener(‘click’, doRoll);
-
-function doRoll() {
-var anySelected = SIDES.some(function (s) { return counts[s] > 0; });
-
-```
-if (!anySelected) {
-    var errorEl = el('error');
-    errorEl.style.display   = 'block';
-    errorEl.style.animation = 'none';
-    setTimeout(function () { errorEl.style.animation = ''; }, 10);
-    return;
-}
-
-el('error').style.display = 'none';
-
-// Shake active cards
-SIDES.forEach(function (s) {
-    if (counts[s] > 0) {
-        var card = el('card-' + s);
-        card.classList.remove('shaking');
-        void card.offsetWidth;
-        card.classList.add('shaking');
-        setTimeout(function () { card.classList.remove('shaking'); }, 500);
-    }
-});
-
-// Pulse roll button
-var rollBtn = el('rollButton');
-rollBtn.classList.remove('rolling');
-void rollBtn.offsetWidth;
-rollBtn.classList.add('rolling');
-setTimeout(function () { rollBtn.classList.remove('rolling'); }, 600);
-
-// Play rattle sound
-MurderSound.rattle();
-
-// Show rolling overlay
-showOverlay();
-```
-
-}
-
-// ── Rolling overlay ───────────────────────────────────────────────
-
-function showOverlay() {
-var overlay    = el(‘rollOverlay’);
-var diceEl     = el(‘overlayDice’);
-var totalEl    = el(‘overlayTotal’);
-
-```
-totalEl.classList.remove('slam');
-totalEl.textContent = '';
-diceEl.innerHTML    = '';
-overlay.classList.add('active');
-
-// Build scrambling die display
-var activeSides = SIDES.filter(function (s) { return counts[s] > 0; });
-var dieEls      = [];
-
-activeSides.forEach(function (s) {
-    for (var i = 0; i < counts[s]; i++) {
-        var d = document.createElement('div');
-        d.className   = 'overlay-die';
-        d.textContent = randomInt(s);
-        diceEl.appendChild(d);
-        dieEls.push({ el: d, sides: s });
-    }
-});
-
-// Scramble numbers for 600ms
-var scrambleInterval = setInterval(function () {
-    dieEls.forEach(function (d) {
-        d.el.textContent = randomInt(d.sides);
-    });
-}, 80);
-
-// After 650ms: compute real result, show final numbers + total
-setTimeout(function () {
-    clearInterval(scrambleInterval);
-
-    var result = compute();
-
-    // Show final roll values per die
-    var idx = 0;
-    result.breakdown.forEach(function (b) {
-        b.rolls.forEach(function (r) {
-            if (dieEls[idx]) {
-                dieEls[idx].el.textContent = r;
-                dieEls[idx].el.style.animation = 'none';
-                dieEls[idx].el.style.color = r === b.sides ? '#c9a84c' : r === 1 ? '#555' : '#c0001a';
-            }
-            idx++;
-        });
-    });
-
-    // Show total with modifier
-    var displayTotal = result.grandTotal + modifier;
-    totalEl.textContent = displayTotal;
-    setTimeout(function () { totalEl.classList.add('slam'); }, 30);
-
-    // Play impact sound
-    MurderSound.impact();
-
-    // Play flourish based on roll quality
-    var maxPossible = SIDES.reduce(function (acc, s) { return acc + counts[s] * s; }, 0);
-    var ratio       = result.grandTotal / maxPossible;
-    if (ratio >= 0.75) {
-        setTimeout(function () { MurderSound.highRoll(); }, 150);
-    } else if (ratio <= 0.25) {
-        setTimeout(function () { MurderSound.lowRoll(); }, 150);
-    }
-
-    // Dismiss overlay after 1s, then render results
-    setTimeout(function () {
-        overlay.classList.remove('active');
-        totalEl.classList.remove('slam');
-        renderResults(result.grandTotal, result.breakdown);
-        addToLog(result.grandTotal, result.breakdown);
-    }, 1000);
-
-}, 650);
-```
-
-}
-
-// ── Compute rolls ─────────────────────────────────────────────────
-
-function compute() {
-var grandTotal = 0;
-var breakdown  = [];
-
-```
-SIDES.forEach(function (s) {
-    var n = counts[s];
-    if (n > 0) {
-        var rolls = [];
-        for (var i = 0; i < n; i++) {
-            rolls.push(randomInt(s));
-        }
-        var sub = rolls.reduce(function (a, b) { return a + b; }, 0);
-        grandTotal += sub;
-        breakdown.push({ sides: s, label: 'd' + s, rolls: rolls, sub: sub });
-    }
-});
-
-return { grandTotal: grandTotal, breakdown: breakdown };
-```
-
-}
-
-// ── Render result panel ───────────────────────────────────────────
-
-function renderResults(total, breakdown) {
-var displayTotal = total + modifier;
-var totalDice    = breakdown.reduce(function (a, b) { return a + b.rolls.length; }, 0);
-var diceDesc     = breakdown.map(function (b) { return b.rolls.length + b.label; }).join(’ + ’);
-var note         = el(‘rollNote’).value.trim();
-
-```
-var modText = '';
-var modClass = '';
-if (modifier > 0) {
-    modText  = 'modifier +' + modifier + ' = ' + displayTotal;
-    modClass = 'positive';
-} else if (modifier < 0) {
-    modText  = 'modifier ' + modifier + ' = ' + displayTotal;
-    modClass = 'negative';
-}
-
-var html = '<div class="result-total">'
-         +   '<div class="result-label">Total</div>'
-         + (note ? '<div class="result-note">' + note + '</div>' : '')
-         +   '<div class="result-number">' + displayTotal + '</div>'
-         + (modText ? '<div class="result-modifier ' + modClass + '">' + modText + '</div>' : '')
-         +   '<div class="result-meta">' + diceDesc + ' &mdash; ' + totalDice + (totalDice === 1 ? ' die' : ' dice') + '</div>'
-         + '</div>';
-
-breakdown.forEach(function (b) {
-    var pips = b.rolls.map(function (r) {
-        var cls = r === b.sides ? 'pip is-max' : r === 1 ? 'pip is-min' : 'pip';
-        return '<span class="' + cls + '">' + r + '</span>';
-    }).join('');
-
-    html += '<div class="breakdown-row">'
-          +   '<span class="bd-die">' + b.label + '</span>'
-          +   '<div class="bd-pips">' + pips + '</div>'
-          +   '<span class="bd-sub">= ' + b.sub + '</span>'
-          + '</div>';
-});
-
-el('results').innerHTML = html;
-```
-
-}
-
-// ── Add to log ────────────────────────────────────────────────────
-
-function addToLog(total, breakdown) {
-rollCount++;
-var displayTotal = total + modifier;
-sessionTotal += displayTotal;
-if (sessionHigh === null || displayTotal > sessionHigh) sessionHigh = displayTotal;
-
-```
-var now      = new Date();
-var timeStr  = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-var diceDesc = breakdown.map(function (b) { return b.rolls.length + b.label; }).join('+');
-var note     = el('rollNote').value.trim();
-
-var modText  = '';
-var modClass = '';
-if (modifier > 0)      { modText = '+' + modifier; modClass = 'positive'; }
-else if (modifier < 0) { modText = String(modifier); modClass = 'negative'; }
-
-var pipStr = breakdown.map(function (b) {
-    return '<span class="pl">' + b.label + ':</span> ' + b.rolls.join(', ');
-}).join('  |  ');
-
-rollHistory.unshift({
-    number:      rollCount,
-    displayTotal: displayTotal,
-    diceDesc:    diceDesc,
-    note:        note,
-    modText:     modText,
-    modClass:    modClass,
-    pipStr:      pipStr,
-    timeStr:     timeStr
-});
-
-renderLog();
-updateStats();
-```
-
-}
-
-// ── Render log ────────────────────────────────────────────────────
-
-function renderLog() {
-var list  = el(‘log-list’);
-var empty = el(‘log-empty’);
-
-```
-if (rollHistory.length === 0) {
-    empty.style.display = 'block';
-    list.innerHTML      = '';
-    return;
-}
-
-empty.style.display = 'none';
-
-list.innerHTML = rollHistory.map(function (e) {
-    var noteHtml = e.note
-        ? '<div class="log-note">' + e.note + '</div>'
-        : '';
-    var modHtml = e.modText
-        ? '<span class="log-mod ' + e.modClass + '">(' + e.modText + ')</span>'
-        : '';
-
-    return '<li class="log-entry">'
-         +   '<div class="log-num">#' + e.number + '</div>'
-         +   '<div class="log-body">'
-         +     noteHtml
-         +     '<div class="log-total-line">'
-         +       '<span class="log-score">' + e.displayTotal + '</span>'
-         +       '<span class="log-desc">'  + e.diceDesc     + '</span>'
-         +       modHtml
-         +     '</div>'
-         +     '<div class="log-pips">' + e.pipStr + '</div>'
-         +   '</div>'
-         +   '<div class="log-time">' + e.timeStr + '</div>'
-         + '</li>';
-}).join('');
-```
-
-}
-
-// ── Update stats bar ──────────────────────────────────────────────
-
-function updateStats() {
-var bar = el(‘statsBar’);
-bar.style.display = ‘flex’;
-el(‘statRolls’).textContent = rollCount;
-el(‘statTotal’).textContent = sessionTotal;
-el(‘statHigh’).textContent  = sessionHigh;
-el(‘statAvg’).textContent   = (sessionTotal / rollCount).toFixed(1);
-}
-
-// ── Clear log ─────────────────────────────────────────────────────
-
-el(‘clearLogBtn’).addEventListener(‘click’, function () {
-rollHistory.length = 0;
-rollCount    = 0;
-sessionTotal = 0;
-sessionHigh  = null;
-renderLog();
-el(‘statsBar’).style.display = ‘none’;
-MurderSound.clear();
-});
-
-</script>
+<script src="js/sound.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>
