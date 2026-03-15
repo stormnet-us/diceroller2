@@ -1,8 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#080808">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Murder Inc — Dice Roller</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -11,156 +15,160 @@
 <body>
 <div class="wrap">
 
-    <!-- HEADER -->
-    <header class="header">
-        <p class="eyebrow">&#9670; Morally Questionable Choices &#9670;</p>
-        <h1 class="title">Murder<span class="sub">Inc</span></h1>
-        <div class="ornament">
-            <div class="orn-line"></div>
-            <span class="orn-diamond">&#9670;</span>
-            <span class="orn-text">Dice Roller</span>
-            <span class="orn-diamond">&#9670;</span>
-            <div class="orn-line right"></div>
-        </div>
-    </header>
-
-    <!-- DICE GRID -->
-    <div class="dice-grid" id="diceGrid">
-
-        <div class="die-card" id="card-4">
-            <div class="die-glyph">&#9670;</div>
-            <div class="die-name">d4</div>
-            <div class="counter">
-                <button class="cnt-btn" data-side="4" data-delta="-1">-</button>
-                <input class="cnt-val" id="cnt-4" value="0" readonly>
-                <button class="cnt-btn" data-side="4" data-delta="1">+</button>
-            </div>
-        </div>
-
-        <div class="die-card" id="card-6">
-            <div class="die-glyph">&#11042;</div>
-            <div class="die-name">d6</div>
-            <div class="counter">
-                <button class="cnt-btn" data-side="6" data-delta="-1">-</button>
-                <input class="cnt-val" id="cnt-6" value="0" readonly>
-                <button class="cnt-btn" data-side="6" data-delta="1">+</button>
-            </div>
-        </div>
-
-        <div class="die-card" id="card-8">
-            <div class="die-glyph">&#9830;</div>
-            <div class="die-name">d8</div>
-            <div class="counter">
-                <button class="cnt-btn" data-side="8" data-delta="-1">-</button>
-                <input class="cnt-val" id="cnt-8" value="0" readonly>
-                <button class="cnt-btn" data-side="8" data-delta="1">+</button>
-            </div>
-        </div>
-
-        <div class="die-card" id="card-10">
-            <div class="die-glyph">&#9900;</div>
-            <div class="die-name">d10</div>
-            <div class="counter">
-                <button class="cnt-btn" data-side="10" data-delta="-1">-</button>
-                <input class="cnt-val" id="cnt-10" value="0" readonly>
-                <button class="cnt-btn" data-side="10" data-delta="1">+</button>
-            </div>
-        </div>
-
-        <div class="die-card" id="card-12">
-            <div class="die-glyph">&#11043;</div>
-            <div class="die-name">d12</div>
-            <div class="counter">
-                <button class="cnt-btn" data-side="12" data-delta="-1">-</button>
-                <input class="cnt-val" id="cnt-12" value="0" readonly>
-                <button class="cnt-btn" data-side="12" data-delta="1">+</button>
-            </div>
-        </div>
-
-        <div class="die-card" id="card-20">
-            <div class="die-glyph">&#11042;</div>
-            <div class="die-name">d20</div>
-            <div class="counter">
-                <button class="cnt-btn" data-side="20" data-delta="-1">-</button>
-                <input class="cnt-val" id="cnt-20" value="0" readonly>
-                <button class="cnt-btn" data-side="20" data-delta="1">+</button>
-            </div>
-        </div>
-
+```
+<!-- HEADER -->
+<header class="header">
+    <p class="eyebrow">&#9670; Underground &#9670; Established Always &#9670;</p>
+    <h1 class="title">Murder<span class="sub">Inc</span></h1>
+    <div class="ornament">
+        <div class="orn-line"></div>
+        <span class="orn-diamond">&#9670;</span>
+        <span class="orn-text">Dice Roller</span>
+        <span class="orn-diamond">&#9670;</span>
+        <div class="orn-line right"></div>
     </div>
+</header>
 
-    <!-- MODIFIER -->
-    <div class="modifier-row">
-        <label class="mod-label" for="modifier">Modifier</label>
-        <div class="mod-controls">
-            <button class="mod-btn" id="modDown">-</button>
-            <input class="mod-val" id="modifier" value="0" readonly>
-            <button class="mod-btn" id="modUp">+</button>
-        </div>
-        <span class="mod-hint">bonus / penalty added to total</span>
-    </div>
+<!-- DICE GRID -->
+<div class="dice-grid" id="diceGrid">
 
-    <!-- ROLL NOTE -->
-    <div class="note-row">
-        <input class="note-input" id="rollNote" type="text" maxlength="60" placeholder="Label this roll (optional)...">
-    </div>
-
-    <!-- ROLL BUTTON -->
-    <div class="roll-btn-wrap">
-        <button id="rollButton">&#9670; Roll &#9670;</button>
-        <button id="clearDiceBtn">Reset</button>
-    </div>
-
-    <!-- ERROR -->
-    <p class="error-msg" id="error">&#9670; Select at least one die to roll &#9670;</p>
-
-    <!-- ROLLING ANIMATION OVERLAY -->
-    <div class="roll-overlay" id="rollOverlay">
-        <div class="roll-overlay-inner">
-            <div class="overlay-dice" id="overlayDice"></div>
-            <div class="overlay-total" id="overlayTotal">...</div>
+    <div class="die-card" id="card-4">
+        <div class="die-glyph">&#9670;</div>
+        <div class="die-name">d4</div>
+        <div class="counter">
+            <button class="cnt-btn" data-side="4" data-delta="-1">-</button>
+            <input class="cnt-val" id="cnt-4" value="0" readonly>
+            <button class="cnt-btn" data-side="4" data-delta="1">+</button>
         </div>
     </div>
 
-    <!-- RESULTS -->
-    <div id="results"></div>
-
-    <!-- LOG -->
-    <section class="log-section">
-        <div class="log-header">
-            <div>
-                <div class="log-title">Roll Log</div>
-                <div class="log-title-sub">Cleared on page refresh</div>
-            </div>
-            <button id="clearLogBtn">Clear log</button>
+    <div class="die-card" id="card-6">
+        <div class="die-glyph">&#11042;</div>
+        <div class="die-name">d6</div>
+        <div class="counter">
+            <button class="cnt-btn" data-side="6" data-delta="-1">-</button>
+            <input class="cnt-val" id="cnt-6" value="0" readonly>
+            <button class="cnt-btn" data-side="6" data-delta="1">+</button>
         </div>
+    </div>
 
-        <div class="stats-bar" id="statsBar">
-            <div class="stat-cell">
-                <div class="stat-val" id="statRolls">0</div>
-                <div class="stat-lbl">Rolls</div>
-            </div>
-            <div class="stat-cell">
-                <div class="stat-val" id="statTotal">0</div>
-                <div class="stat-lbl">Grand Total</div>
-            </div>
-            <div class="stat-cell">
-                <div class="stat-val" id="statHigh">—</div>
-                <div class="stat-lbl">Best Roll</div>
-            </div>
-            <div class="stat-cell">
-                <div class="stat-val" id="statAvg">—</div>
-                <div class="stat-lbl">Average</div>
-            </div>
+    <div class="die-card" id="card-8">
+        <div class="die-glyph">&#9830;</div>
+        <div class="die-name">d8</div>
+        <div class="counter">
+            <button class="cnt-btn" data-side="8" data-delta="-1">-</button>
+            <input class="cnt-val" id="cnt-8" value="0" readonly>
+            <button class="cnt-btn" data-side="8" data-delta="1">+</button>
         </div>
+    </div>
 
-        <p id="log-empty">No rolls yet. Let it rip.</p>
-        <ul id="log-list"></ul>
-    </section>
+    <div class="die-card" id="card-10">
+        <div class="die-glyph">&#9900;</div>
+        <div class="die-name">d10</div>
+        <div class="counter">
+            <button class="cnt-btn" data-side="10" data-delta="-1">-</button>
+            <input class="cnt-val" id="cnt-10" value="0" readonly>
+            <button class="cnt-btn" data-side="10" data-delta="1">+</button>
+        </div>
+    </div>
+
+    <div class="die-card" id="card-12">
+        <div class="die-glyph">&#11043;</div>
+        <div class="die-name">d12</div>
+        <div class="counter">
+            <button class="cnt-btn" data-side="12" data-delta="-1">-</button>
+            <input class="cnt-val" id="cnt-12" value="0" readonly>
+            <button class="cnt-btn" data-side="12" data-delta="1">+</button>
+        </div>
+    </div>
+
+    <div class="die-card" id="card-20">
+        <div class="die-glyph">&#11042;</div>
+        <div class="die-name">d20</div>
+        <div class="counter">
+            <button class="cnt-btn" data-side="20" data-delta="-1">-</button>
+            <input class="cnt-val" id="cnt-20" value="0" readonly>
+            <button class="cnt-btn" data-side="20" data-delta="1">+</button>
+        </div>
+    </div>
+
+</div>
+
+<!-- MODIFIER -->
+<div class="modifier-row">
+    <label class="mod-label" for="modifier">Modifier</label>
+    <div class="mod-controls">
+        <button class="mod-btn" id="modDown">-</button>
+        <input class="mod-val" id="modifier" value="0" readonly>
+        <button class="mod-btn" id="modUp">+</button>
+    </div>
+    <span class="mod-hint">bonus / penalty added to total</span>
+</div>
+
+<!-- ROLL NOTE -->
+<div class="note-row">
+    <input class="note-input" id="rollNote" type="text" maxlength="60" placeholder="Label this roll (optional)...">
+</div>
+
+<!-- ROLL BUTTON -->
+<div class="roll-btn-wrap">
+    <button id="rollButton">&#9670; Roll &#9670;</button>
+    <button id="clearDiceBtn">Reset</button>
+</div>
+
+<!-- ERROR -->
+<p class="error-msg" id="error">&#9670; Select at least one die to roll &#9670;</p>
+
+<!-- ROLLING ANIMATION OVERLAY -->
+<div class="roll-overlay" id="rollOverlay">
+    <div class="roll-overlay-inner">
+        <div class="overlay-dice" id="overlayDice"></div>
+        <div class="overlay-total" id="overlayTotal">...</div>
+    </div>
+</div>
+
+<!-- RESULTS -->
+<div id="results"></div>
+
+<!-- LOG -->
+<section class="log-section">
+    <div class="log-header">
+        <div>
+            <div class="log-title">Roll Log</div>
+            <div class="log-title-sub">Cleared on page refresh</div>
+        </div>
+        <button id="clearLogBtn">Clear log</button>
+    </div>
+
+    <div class="stats-bar" id="statsBar">
+        <div class="stat-cell">
+            <div class="stat-val" id="statRolls">0</div>
+            <div class="stat-lbl">Rolls</div>
+        </div>
+        <div class="stat-cell">
+            <div class="stat-val" id="statTotal">0</div>
+            <div class="stat-lbl">Grand Total</div>
+        </div>
+        <div class="stat-cell">
+            <div class="stat-val" id="statHigh">—</div>
+            <div class="stat-lbl">Best Roll</div>
+        </div>
+        <div class="stat-cell">
+            <div class="stat-val" id="statAvg">—</div>
+            <div class="stat-lbl">Average</div>
+        </div>
+    </div>
+
+    <p id="log-empty">No rolls yet. Let it rip.</p>
+    <ul id="log-list"></ul>
+</section>
+```
 
 </div>
 
 <script src="js/sound.js"></script>
+
 <script src="js/app.js"></script>
+
 </body>
 </html>
